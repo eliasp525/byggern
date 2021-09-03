@@ -1,4 +1,3 @@
-#include <avr/io.h>
 #include "uart.h"
 
 
@@ -13,7 +12,7 @@ void USART_init( unsigned int ubrr ){
 }
 
 //UART transmit data:
-void USART_transmit( unsigned char  data){
+int USART_transmit( unsigned char  data, FILE* file){
     /* Wait for empty transmit buffer */
     while( !( UCSR0A &( 1 << UDRE0 )))
     /* Put data into buffer, sends the data */
@@ -21,7 +20,7 @@ void USART_transmit( unsigned char  data){
 }
 
 //UART recieve data.
-unsigned char USART_receive(){
+int USART_receive(FILE* file){
 /* Wait for data to be received */
 while (!(UCSR0A & (1<<RXC0)))
 /* Get and return received data from buffer */
