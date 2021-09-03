@@ -22,7 +22,9 @@ int main(){
 
     USART_init(MYUBRR);
 
-    USART_transmit("a");
-
+    while (1){
+        USART_transmit("a");
+    }
+    
     return 0;
 }
