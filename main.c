@@ -4,6 +4,7 @@
 #include <util/delay.h>
 #include "bit_operations.h"
 #include "external_memory.h"
+#include "sram_test.h"
 
 int main(){
     DDRA = 0;
@@ -22,8 +23,11 @@ int main(){
     // USART_transmit(USART_receive());
 
     config_external_memory();
-    EXTERNAL_MEMORY->OLED_COMMAND[3] = 0b10010011;
+    
+    // EXTERNAL_MEMORY->SRAM[0] = 0xFF;
+    // printf( "Value: %d \r\n", EXTERNAL_MEMORY->SRAM[0]);
 
+    SRAM_test();
 
     while(1);
 
