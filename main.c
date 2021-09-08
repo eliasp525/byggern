@@ -14,13 +14,14 @@ int main(){
     DDRA = 0;
     USART_init(MYUBRR);
     
-    while (1)
+    fdevopen(USART_transmit, USART_receive);
+    for (int i = 0; i < 100; i++)
     {
         set_bit(PORTA,1);
         _delay_ms(100);
         clear_bit(PORTA,1);
         _delay_ms(100);
-        USART_transmit('b');
+        printf("f ord\r\n");
     }
     
     return 0;
