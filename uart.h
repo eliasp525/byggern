@@ -11,7 +11,7 @@
 
 
 void USART_init( unsigned int ubrr);
-int USART_transmit( unsigned char  data, FILE* file);
-int USART_receive(FILE* file);
+int USART_transmit( unsigned char  data);
+int USART_receive();
 
 #endif

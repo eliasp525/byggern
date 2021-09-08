@@ -12,7 +12,7 @@ void USART_init( unsigned int ubrr ){
 }
 
 //UART transmit data:
-int USART_transmit( unsigned char  data, FILE* file){
+int USART_transmit(unsigned char data){
     /* Wait for empty transmit buffer */
     while( !( UCSR0A &( 1 << UDRE0 )));
     /* Put data into buffer, sends the data */
@@ -20,9 +20,9 @@ int USART_transmit( unsigned char  data, FILE* file){
 }
 
 //UART recieve data.
-int USART_receive(FILE * file){
+int USART_receive(){
 /* Wait for data to be received */
-while ((!(UCSR0A) & (1<<RXC0)));
-/* Get and return received data from buffer */
+while (!((UCSR0A) & (1<<RXC0)));
+/* Get and return received data from buffer */ 
 return UDR0;
 }
