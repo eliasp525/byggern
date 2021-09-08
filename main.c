@@ -1,14 +1,9 @@
+#define F_CPU 4915200
 #include <avr/io.h>
 #include "uart.h"
-#define F_CPU 4915200
 #include <util/delay.h>
-
-
-#define set_bit(reg, bit) (reg |= (1 << bit))
-#define clear_bit(reg, bit) (reg  &= ~(1<<bit))
-#define test_bit(reg, bit) (reg & (1 << bit))
-//#define loop_until_bit_is_set(reg, bit) while(!test_bit(reg ,bit))
-//#define loop_until_bit_is_clear(reg, bit) while(test_bit(reg ,bit))
+#include "bit_operations.h"
+#include "external_memory.h"
 
 int main(){
     DDRA = 0;
@@ -21,13 +16,16 @@ int main(){
     //     _delay_ms(100);
     //     clear_bit(PORTA,1);
     //     _delay_ms(100);
-    //     printf("f ord\n");
+    //     // printf("f ord\n");
     // }
 
-    USART_transmit(USART_receive());
+    // USART_transmit(USART_receive());
+
+    config_external_memory();
+    EXTERNAL_MEMORY->OLED_COMMAND[3] = 0b10010011;
 
 
-
+    while(1);
 
     return 0;
 }
