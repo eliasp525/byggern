@@ -44,6 +44,10 @@ int main(){
     position[0] = 0;
     position[1] = 0;
 
+    int buttons[2];
+    buttons[0] = 0;
+    buttons[1] = 0;
+
     
 
     
@@ -51,9 +55,11 @@ int main(){
     while(1){
         //printf("Y: %d \r\n", read_adc_channel(0));
         //printf("X: %d \r\n", read_adc_channel(1));
-        calculate_x_y(position, bias);
-        printf("Bias -  X: %d, Y: %d", bias[0], bias[1]);
-        printf("X: %d, Y: %d \r\n", position[0], position[1]);
+        //calculate_x_y(position, bias);
+        read_touch_buttons(buttons);
+        printf("\r\nButtons: L: %d,   R: %d", buttons[0], buttons[1]);
+        //printf("Bias -  X: %d, Y: %d", bias[0], bias[1]);
+        //printf("X: %d, Y: %d \r\n", position[0], position[1]);
         //printf("joystick direction : %d \r\n", calculate_direction(bias));
         //printf("Slider_left: %d \r\n", read_adc_channel(2));
         //printf("Slider_right: %d \r\n", read_adc_channel(3));

@@ -30,5 +30,7 @@ void calculate_x_y(int *position, int *bias);
 
 DIRECTION calculate_direction(int *bias);
 
+void read_touch_buttons(int *buttons);
+
 
 #endif

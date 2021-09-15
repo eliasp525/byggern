@@ -19,16 +19,16 @@ void calculate_x_y(int *joystick_position, int *bias){
     int y = read_adc_channel(Y_DIRECTION);
     
     if(x - bias[0] - 128 > 0){
-        joystick_position[0] = (x - bias[0] - 128)*100/(128-bias[0]);
+        joystick_position[0] = (x - bias[0] - 128)*100/(127-bias[0]);
     }
     else{
-        joystick_position[0] = (x - bias[0] - 128)*100/(128+bias[0]);
+        joystick_position[0] = (x - bias[0] - 128)*100/(126+bias[0]);
     }
     if(y - bias[1] - 128 > 0){
-        joystick_position[1] = (y - bias[1] - 128)*100/(128-bias[1]);
+        joystick_position[1] = (y - bias[1] - 128)*100/(127-bias[1]);
     }
     else{
-        joystick_position[1] = (y - bias[1] - 128)*100/(128+bias[1]);
+        joystick_position[1] = (y - bias[1] - 128)*100/(126+bias[1]);
     }
     
 }
@@ -51,4 +51,7 @@ DIRECTION calculate_direction(int *bias){
 
 
 }
-uint
+void read_touch_buttons(int *buttons){
+    buttons[0] = PINB & (1 << PB2);
+    buttons[1] = PINB & (1 << PB3);
+}
