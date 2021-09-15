@@ -29,6 +29,9 @@ int main(){
 
     SRAM_test();
 
+
+    
+
     while(1);
 
     return 0;
