@@ -5,6 +5,10 @@
 #define Y_DIRECTION 0
 #define X_DIRECTION 1
 
+#ifndef F_CPU
+#define F_CPU 4915200
+#endif
+
 #include <util/delay.h>
 #include "external_memory.h"
 #include <avr/io.h>
