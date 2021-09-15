@@ -1,8 +1,7 @@
-#include <stdint.h>
-
 #ifndef EXTERNAL_MEMORY_H
-
 #define EXTERNAL_MEMORY_H
+
+#include <stdint.h>
 
 #define EXTERNAL_MEMORY_LOCATION 0x1000
 
