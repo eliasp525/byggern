@@ -5,6 +5,7 @@
 #include "bit_operations.h"
 #include "external_memory.h"
 #include "sram_test.h"
+#include "input.h"
 
 int main(){
     DDRA = 0;
@@ -28,6 +29,8 @@ int main(){
     // printf( "Value: %d \r\n", EXTERNAL_MEMORY->SRAM[0]);
 
     SRAM_test();
+    float bias[2];  //X is index 0, Y is index 1
+    calibrate_joystick_bias(bias);
 
 
     
