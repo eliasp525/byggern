@@ -49,6 +49,7 @@ int main(){
         //printf("X: %d \r\n", read_adc_channel(1));
         calculate_x_y(position, bias);
         printf("X: %d, Y: %d \r\n", position[0], position[1]);
+        printf("joystick direction : %d \r\n", calculate_direction(bias))
         //printf("Slider_left: %d \r\n", read_adc_channel(2));
         //printf("Slider_right: %d \r\n", read_adc_channel(3));
         _delay_ms(500);
