@@ -32,20 +32,26 @@ int main(){
     // EXTERNAL_MEMORY->SRAM[0] = 0xFF;
     // printf( "Value: %d \r\n", EXTERNAL_MEMORY->SRAM[0]);
 
+    PWM_init();
+
     SRAM_test();
     float bias[2];  //X is index 0, Y is index 1
     calibrate_joystick_bias(bias);
 
-    PWM_init();
+    float position[2];
+
+    
 
     
 
     while(1){
         //printf("Y: %d \r\n", read_adc_channel(0));
         //printf("X: %d \r\n", read_adc_channel(1));
-        printf("Slider_left: %d \r\n", read_adc_channel(2));
-        printf("Slider_right: %d \r\n", read_adc_channel(3));
-        _delay_ms(50git0);
+        calculate_x_y(position, bias);
+        printf("X: %d, Y: %d \r\n", position[0], position[1]);
+        //printf("Slider_left: %d \r\n", read_adc_channel(2));
+        //printf("Slider_right: %d \r\n", read_adc_channel(3));
+        _delay_ms(500);
     }
 
     return 0;

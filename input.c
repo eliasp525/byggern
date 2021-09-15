@@ -12,20 +12,21 @@ void calibrate_joystick_bias(float *bias){
 }
 
 
-uint8_t *calculate_x_y(float *bias){
+void calculate_x_y(float *joystick_position, float *bias){
     uint8_t x = read_adc_channel(X_DIRECTION);
     uint8_t y = read_adc_channel(Y_DIRECTION);
 
-    uint8_t x_percent;
+    float joystick_position[0] = (x - 128 - bias[0])*100/(-128-bias[0]);
+    float joystick_position[1] = (y - 128 - bias[1])*100/(-128-bias[1]);
 
-    if (x-bias[0] > 128){
-        //float x_constant_positive = (128 - bias[0])/100;
-        float x_percent = x*(128 - bias[0])/100
-    }
-    else{
-        float x_constant_negative = (-128 - bias[0])/100;
-        float x_percent = x*(-)
-    }
+    // if (x-bias[0] > 128){
+    //     //float x_constant_positive = (128 - bias[0])/100;
+    //     float x_percent = x*(128 - bias[0])/100
+    // }
+    // else{
+    //     float x_constant_negative = (-128 - bias[0])/100;
+    //     float x_percent = x*(-)
+    // }
 }
 
 
