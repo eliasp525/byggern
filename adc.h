@@ -2,8 +2,7 @@
 #define ADC_H
 
 #define SINGLE_CHANNEL_ADDRESS 0b10000000
-#define Y_DIRECTION 0
-#define X_DIRECTION 1
+
 
 #ifndef F_CPU
 #define F_CPU 4915200
