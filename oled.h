@@ -1,6 +1,7 @@
 #ifndef OLED_H
 #define OLED_H
 
+#include "fonts.h"
 #include "external_memory.h"
 
 void oled_init();

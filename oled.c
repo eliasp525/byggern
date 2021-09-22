@@ -5,8 +5,8 @@
 #define OLED_HEIGHT 64
 #define TOTAL_PAGES 8
 
-void write_d(uint8_t address, uint8_t data){
-   EXTERNAL_MEMORY->OLED_DATA[address] = data;
+void write_d(uint8_t data){
+   EXTERNAL_MEMORY->OLED_DATA[0] = data;
 }
 
 void write_c(uint8_t byte){
@@ -41,6 +41,21 @@ void oled_clear_page(uint8_t page){
    for(int i = 0; i < OLED_WIDTH; i++){
       write_d(i, 0x00);
    }
+}
+
+void oled_print(char letter){
+    if (letter < 32 || letter > 126){
+        printf("ERROR: unsupported letter");
+        return;
+    }
+
+    uint8_t font_index = letter - 32;
+
+    //using font5
+    for (uint8_t i = 0; i < 5; i++){
+        uint8_t letter_pixels = pgm_read_byte(&(font5[font_index][i]));
+        write_d(letter_pixels);
+    }
 }
 
 //code implemented from LY190-128064 data sheet
