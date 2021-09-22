@@ -48,6 +48,11 @@ int main(){
     int buttons[2];
     buttons[0] = 0;
     buttons[1] = 0;
+    
+    int sliders[2];
+    slider[0] = 0;
+    slider[1] = 0;
+
 
     
     oled_init();

@@ -2,6 +2,7 @@
 #define OLED_H
 
 #include "external_memory.h"
+#include "input.h"
 
 void oled_init();
 
@@ -15,4 +16,7 @@ void oled_reset();
 
 void oled_clear_page(unsigned int page);
 
-#endif
+uint8_t menu_loop(string *menu_elements, int *position);
+
+void menu_init(string *menu_elements, int *position);
+#endif   

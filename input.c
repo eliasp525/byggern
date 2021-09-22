@@ -52,6 +52,15 @@ DIRECTION calculate_direction(int *bias){
 
 }
 void read_touch_buttons(int *buttons){
-    buttons[0] = PINB & (1 << PB2);
-    buttons[1] = PINB & (1 << PB3);
+    buttons[0] = 2 >> (PINB & (1 << PB2));
+    buttons[1] = 3 >> (PINB & (1 << PB3));
+}
+
+void read_sliders(int* sliders){
+    sliders[0] = read_adc_channel(3); 
+    sliders[1] = read_adc_channel(4); 
+}
+
+uint8_t read_joystick_button(){
+    return  (2 >> !(PIND & ( 1 << PD2))); //is pulled low on trigger
 }
