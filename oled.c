@@ -4,6 +4,7 @@
 #define OLED_WIDTH 128
 #define OLED_HEIGHT 64
 #define TOTAL_PAGES 8
+#define MENU_HEIGHT 8
 
 void write_d(uint8_t data){
    EXTERNAL_MEMORY->OLED_DATA[0] = data;
@@ -85,6 +86,24 @@ void oled_goto_page(uint8_t page){
    }
    write_c(0xb0 + page);
 
+}
+void menu_init(string *menu_elements, int *position){
+   oled_goto_page(0);
+   oled_clear_page(0);
+   oled_inverted_write(menu_elements[0]); // pseudo // The menu_element to be selected
+
+   for int i = 1; i < MENU_HEIGHT; i ++){
+      oled_goto_page(i);
+      oled_clear_page(i);
+      oled_write(menu_elements[i]); //pseudo
+   }
+   
+}
+
+uint8_t menu_loop(string *menu_elements, int *position){
+   if(read_joystick_button()){
+      
+   }
 }
 
 void oled_goto_position(uint8_t column, uint8_t page){

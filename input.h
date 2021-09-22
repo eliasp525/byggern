@@ -32,5 +32,9 @@ DIRECTION calculate_direction(int *bias);
 
 void read_touch_buttons(int *buttons);
 
+void read_sliders(int* sliders);
+
+uint8_t read_joystick_button();
+
 
 #endif
