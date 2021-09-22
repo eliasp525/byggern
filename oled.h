@@ -3,5 +3,8 @@
 
 #include "external_memory.h"
 
+void oled_init();
+
+void write_c(uint8_t byte);
 
 #endif

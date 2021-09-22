@@ -10,6 +10,7 @@
 #include "input.h"
 #include "PWM.h"
 #include "adc.h"
+#include "oled.h"
 
 int main(){
     DDRA = 0;
@@ -48,11 +49,26 @@ int main(){
     buttons[0] = 0;
     buttons[1] = 0;
 
-    EXTERNAL_MEMORY->OLED_COMMAND[0xaf] = 0x10af;
-
+    
+    oled_init();
+    
+    for(int j = 0; j < 3; j++){
+        int addr = 0xb0 + j;
+        for(int i = 0; i < 127; i++){
+            EXTERNAL_MEMORY->OLED_DATA[i] = 0xFF;
+            EXTERNAL_MEMORY->OLED_DATA[i+1] = 0x00;
+        }
+        write_c(addr);
+    }
+    for(int j = 3; j < 8; j++){
+        int addr = 0xb0 + j;
+        for(int i = 1; i < 127; i++){
+            EXTERNAL_MEMORY->OLED_DATA[i] = 0x00;
+        }
+        write_c(addr);
+    } 
     
 
-    
 
     while(1){
         //printf("Y: %d \r\n", read_adc_channel(0));
