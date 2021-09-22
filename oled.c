@@ -5,6 +5,10 @@
 #define OLED_HEIGHT 64
 #define TOTAL_PAGES 8
 
+void write_d(uint8_t address, uint8_t data){
+    EXTERNAL_MEMORY->OLED_DATA[address] = data;
+}
+
 void write_c(uint8_t byte){
 
    EXTERNAL_MEMORY->OLED_COMMAND[0] = byte;
