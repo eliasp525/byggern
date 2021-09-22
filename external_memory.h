@@ -3,12 +3,9 @@
 
 #include <stdint.h>
 
-#define EXTERNAL_MEMORY_LOCATION 0x1000
+#include "constants.h"
 
-#define EXTERNAL_MEMORY ((EXTERNAL_MEMORY_MAP*) EXTERNAL_MEMORY_LOCATION )
-
-typedef struct
-{
+typedef struct {
     volatile uint8_t OLED_COMMAND[512];
     volatile uint8_t OLED_DATA[512];
     volatile uint8_t ADC[1024];

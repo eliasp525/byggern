@@ -1,25 +1,15 @@
 #ifndef INPUT_H
 #define INPUT_H
 
-#include "adc.h"
-#include <stdlib.h>
 #include <stdint.h>
+#include <stdlib.h>
 
-#define MAX_AMP 255
-#define MIN_AMP 0
-#define NO_AMP 128
-#define Y_DIRECTION 0
-#define X_DIRECTION 1
+#include "adc.h"
+#include "constants.h"
 
-typedef enum{
-    LEFT,
-    RIGHT,
-    UP,
-    DOWN,
-    NEUTRAL
-}DIRECTION;
+typedef enum { LEFT, RIGHT, UP, DOWN, NEUTRAL } DIRECTION;
 
-struct position{
+struct position {
     float x;
     float y;
 };
@@ -32,9 +22,8 @@ DIRECTION calculate_direction(int *bias);
 
 void read_touch_buttons(int *buttons);
 
-void read_sliders(int* sliders);
+void read_sliders(int *sliders);
 
 uint8_t read_joystick_button();
-
 
 #endif
