@@ -6,15 +6,19 @@
 #define TOTAL_PAGES 8
 
 void write_d(uint8_t address, uint8_t data){
-    EXTERNAL_MEMORY->OLED_DATA[address] = data;
+   EXTERNAL_MEMORY->OLED_DATA[address] = data;
 }
 
 void write_c(uint8_t byte){
-
    EXTERNAL_MEMORY->OLED_COMMAND[0] = byte;
 }
 
 void oled_goto_column(uint8_t column){
+   if( column >= OLED_WIDTH) {
+      printf('\n\rERROR: column out of range. oled_goto_page tried to access column %d', column);
+      printf('column reset to 0');
+      column = 0;
+   }
     uint8_t lower_nibble = column & 0xF;
     uint8_t upper_nibble = (column >> 4) & 0x1F;
     write_c(lower_nibble);
@@ -29,14 +33,13 @@ void oled_home(){
 void oled_reset(){
    for(unsigned int j = 0; j < TOTAL_PAGES; j++){
         oled_clear_page(j);
-    }
+   }
 }
 
-void oled_clear_page(unsigned int page){
-   int f = 0xb0 + page;
-   write_c(f); // TODO: use goto_page function
+void oled_clear_page(uint8_t page){
+   oled_goto_page(page);
    for(int i = 0; i < OLED_WIDTH; i++){
-      EXTERNAL_MEMORY->OLED_DATA[i] = 0x00; // TODO: use write data function
+      write_d(i, 0x00);
    }
 }
 
@@ -60,8 +63,7 @@ void oled_init()
 
 
 void oled_goto_page(uint8_t page){
-   //page should range from 0 to 7:
-   if( page > 7){
+   if( page >= TOTAL_PAGES){
       printf('\n\rERROR: page out of range. oled_goto_page tried to access page %d', page);
       printf('page reset to 0');
       page = 0;
@@ -70,3 +72,7 @@ void oled_goto_page(uint8_t page){
 
 }
 
+void oled_goto_position(uint8_t column, uint8_t page){
+   oled_goto_column(column);
+   oled_goto_page(page);
+}

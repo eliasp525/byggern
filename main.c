@@ -52,22 +52,30 @@ int main(){
     
     oled_init();
     
-    for(int j = 0; j < 3; j++){
-        int addr = 0xb0 + j;
-        for(int i = 0; i < 127; i++){
-            EXTERNAL_MEMORY->OLED_DATA[i] = 0xFF;
-            EXTERNAL_MEMORY->OLED_DATA[i+1] = 0x00;
-        }
-        write_c(addr);
-    }
-    for(int j = 3; j < 8; j++){
-        int addr = 0xb0 + j;
-        for(int i = 1; i < 127; i++){
-            EXTERNAL_MEMORY->OLED_DATA[i] = 0x00;
-        }
-        write_c(addr);
-    } 
+    // for(int j = 0; j < 3; j++){
+    //     int addr = 0xb0 + j;
+    //     for(int i = 0; i < 127; i++){
+    //         EXTERNAL_MEMORY->OLED_DATA[i] = 0xFF;
+    //         EXTERNAL_MEMORY->OLED_DATA[i+1] = 0x00;
+    //     }
+    //     write_c(addr);
+    // }
+    // for(int j = 3; j < 8; j++){
+    //     int addr = 0xb0 + j;
+    //     for(int i = 1; i < 127; i++){
+    //         EXTERNAL_MEMORY->OLED_DATA[i] = 0x00;
+    //     }
+    //     write_c(addr);
+    // } 
     
+    oled_goto_page(0);
+    
+    for(int i = 1; i < 128; i += 1){
+        write_d(i, 0xFF);
+    }
+
+    _delay_ms(1000);
+
     oled_reset();
 
     while(1){
