@@ -26,3 +26,15 @@ void oled_init()
 }
 
 
+
+void oled_goto_page(uint8_t page){
+   //page should range from 0 to 7:
+   if( page > 7){
+      printf('\n\rERROR: page out of range. oled_goto_page tried to access page %d', page);
+      printf('page reset to 0');
+      page = 0;
+   }
+   write_c(0xb0 + page);
+
+}
+
