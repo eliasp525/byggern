@@ -48,6 +48,8 @@ int main(){
     buttons[0] = 0;
     buttons[1] = 0;
 
+    EXTERNAL_MEMORY->OLED_COMMAND[0xaf] = 0x10af;
+
     
 
     
