@@ -68,7 +68,7 @@ int main(){
         write_c(addr);
     } 
     
-
+    oled_reset();
 
     while(1){
         //printf("Y: %d \r\n", read_adc_channel(0));
