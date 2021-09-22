@@ -1,5 +1,10 @@
 #include "oled.h"
 
+
+void write_c(int byte){
+    EXTERNAL_MEMORY->OLED_COMMAND[0] = byte;
+}
+
 //code implemented from LY190-128064 data sheet
 void oled_init()
  {
@@ -25,6 +30,4 @@ void oled_init()
     write_c(0x10a4); //out follows RAM content
     write_c(0x10a6); //set normal display
     write_c(0x10af); // display on 
-    
-    EXTERNAL_MEMORY->OLED_COMMAND[0xaf] = 0x10af;
  }
