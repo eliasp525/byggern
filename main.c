@@ -72,14 +72,16 @@ int main() {
     //     write_c(addr);
     // }
 
+    oled_reset();
     oled_goto_page(4);
-    oled_goto_column(64);
+    oled_goto_column(0);
 
     // for (int i = 1; i < 10; i += 1) {
     //     write_d(i, 0xFF);
     // }
 
-    oled_print('Q');
+    // oled_print('Q');
+    printo("Hello world!");
 
     //_delay_ms(5000);
 

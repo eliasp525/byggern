@@ -53,6 +53,12 @@ void oled_print(char letter) {
     }
 }
 
+void printo(char* string){
+    for (uint8_t i = 0; string[i] != 0; i++){
+        oled_print(string[i]);
+    }
+}
+
 void oled_init() {
     write_c(0xae);  // display off
     write_c(0xa1);  // segment remap
