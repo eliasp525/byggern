@@ -1,7 +1,6 @@
 #include <avr/io.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <util/delay.h>
 
 #include "PWM.h"
 #include "adc.h"
@@ -12,6 +11,9 @@
 #include "oled.h"
 #include "sram_test.h"
 #include "uart.h"
+
+
+#include <util/delay.h> //this must be after constants.h
 
 int main() {
     DDRA = 0;
@@ -51,7 +53,7 @@ int main() {
     // oled_goto_position(0, 3);
     // printo("Hello world!", 1);
 
-    _delay_ms(5000);
+    _delay_ms(1500);
 
     //oled_reset();
 

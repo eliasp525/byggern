@@ -116,12 +116,12 @@ void oled_draw_star(){
 
 // --------MENU---------
 
-void refresh_menu(char* menu_elements[], uint8_t selected_option){
+void refresh_menu(char* menu_elements[], uint8_t current_option){
     //oled_reset(); dont need to reset the screen when we are overwriting all pages anyways?
     for (uint8_t i = 0; i < TOTAL_PAGES; i++){
         oled_goto_position(0, i);
         uint8_t invert = 0;
-        if (selected_option == i){
+        if (current_option == i){
             invert = 1;
         }
         printo(menu_elements[i], invert);
@@ -129,29 +129,29 @@ void refresh_menu(char* menu_elements[], uint8_t selected_option){
 }
 
 void run_menu(int* bias, char* menu_elements[]){
-    uint8_t selected_option = 0;
+    uint8_t current_option = 0;
     oled_reset(); //put reset here instead of in refresh_menu()
-    refresh_menu(menu_elements, selected_option);
+    refresh_menu(menu_elements, current_option);
     INPUT input = NEUTRAL;
     while(1){
         input = read_input(bias, input);
         switch (input)
         {        
         case UP:
-            if (selected_option == 0){
-                selected_option = TOTAL_PAGES - 1;
+            if (current_option == 0){
+                current_option = TOTAL_PAGES - 4;
             }
-            selected_option = selected_option - 1;
+            current_option = current_option - 1;
             break;
         case DOWN:
-            selected_option = (selected_option + 1) % (TOTAL_PAGES - 1);
+            current_option = (current_option + 1) % (TOTAL_PAGES - 4);
             break;
         case ANALOG_PRESS:
             break;
         default:
             break;
         }
-        refresh_menu(menu_elements, selected_option);
+        refresh_menu(menu_elements, current_option);
         _delay_us(10);
     }
 }

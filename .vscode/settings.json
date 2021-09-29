@@ -4,7 +4,8 @@
         "times.h": "c",
         "oled.h": "c",
         "constants.h": "c",
-        "external_memory.h": "c"
+        "external_memory.h": "c",
+        "bit_operations.h": "c"
     },
     "C_Cpp.errorSquiggles": "Disabled",
     "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: Google, IndentWidth: 4, ColumnLimit: 120 }",
