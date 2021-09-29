@@ -12,9 +12,9 @@ void oled_goto_column(uint8_t column) {
     }
     uint8_t lower_nibble = column & 0xf ;
     uint8_t upper_nibble = (column >> 4) | 0x10;
-    printf('\r\n');
-    printf('%d\r\n', lower_nibble);
-    printf('%d\r\n', upper_nibble);
+    //printf('\r\n');
+    //printf('%d\r\n', lower_nibble);
+    //printf('%d\r\n', upper_nibble);
 
     write_c(lower_nibble);
     write_c(upper_nibble);
@@ -38,24 +38,30 @@ void oled_clear_page(uint8_t page) {
     }
 }
 
-void oled_print(char letter, uint) {
+void oled_print(char letter, uint8_t invert) {
     if (letter < 32 || letter > 126) {
         printf('ERROR: unsupported letter');
         return;
     }
     
     uint8_t font_index = letter - 32;
-
-    // using font8
-    for (uint8_t i = 0; i < 8; i++) {
+    if (invert){
+        for (uint8_t i = 0; i < 8; i++) {
+        uint8_t letter_pixels = pgm_read_byte(&(font8[font_index][i]));
+        write_d(~letter_pixels);
+        }
+    }
+    else {
+        for (uint8_t i = 0; i < 8; i++) {
         uint8_t letter_pixels = pgm_read_byte(&(font8[font_index][i]));
         write_d(letter_pixels);
+        }    
     }
 }
 
-void printo(char* string){
+void printo(char* string, uint8_t invert){
     for (uint8_t i = 0; string[i] != 0; i++){
-        oled_print(string[i]);
+        oled_print(string[i], invert);
     }
 }
 
@@ -100,62 +106,39 @@ void oled_goto_position(uint8_t column, uint8_t page) {
 
 // --------MENU---------
 
-// void menu_init(char *menu_elements, int *position) {
-//     oled_goto_page(0);
-//     oled_clear_page(0);
-//     oled_inverted_write(menu_elements[0]);  // pseudo // The menu_element to be selected
-
-//    for
-//        int i = 1;
-//    i < MENU_HEIGHT; i ++){
-//        oled_goto_page(i);
-//        oled_clear_page(i);
-//        oled_write(menu_elements[i]);  // pseudo
-//    }
-// }
-
-// uint8_t menu_loop(char *menu_elements, int *position) {
-//     if (read_joystick_button()) {
-//     }
-// }
-
-void menu_init(char* menu_elements[]){
+void refresh_menu(char* menu_elements[], uint8_t selected_option){
     oled_reset();
     for (uint8_t i = 0; i < TOTAL_PAGES; i++){
-        oled_goto_page(i);
-        oled_goto_column(0);
-        printo(menu_elements[i]);
+        oled_goto_position(0, i);
+        uint8_t invert = 0;
+        if (selected_option == i){
+            invert = 1;
+        }
+        printo(menu_elements[i], invert);
     }
 }
 
 void run_menu(int* bias, char* menu_elements[]){
-    uint8_t selected_option = 0; 
+    uint8_t selected_option = 0;
+    refresh_menu(menu_elements, selected_option);
     INPUT input = NEUTRAL;
     while(1){
         input = read_input(bias, input);
         switch (input)
         {        
         case UP:
-            selected_option = (selected_option - 1) % TOTAL_PAGES
+            if (selected_option == 0){
+                selected_option = TOTAL_PAGES;
+            }
+            selected_option = selected_option - 1;
             break;
         case DOWN:
-            selected_option = (selected_option + 1) % TOTAL_PAGES
+            selected_option = (selected_option + 1) % TOTAL_PAGES;
             break;
         case ANALOG_PRESS:
             break;
         }
-        oled_goto_page(selected_option);
-        oled_goto_column(0);
-        
-        printo(invert_text(menu_elements[selected_option]));
-        
-        // invert all bits in selected page
-    }
-}
-
-void printo_inverted(char* string){
-    for (uint8_t i = 0; string[i] != 0; i++){
-        oled_print(string[i]);
+        refresh_menu(menu_elements, selected_option);
     }
 }
 

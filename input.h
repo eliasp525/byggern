@@ -3,10 +3,10 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <util/delay.h>
 
 #include "adc.h"
 #include "constants.h"
-#include "util/delay.h"
 
 typedef enum { LEFT, RIGHT, UP, DOWN, NEUTRAL, ANALOG_PRESS } INPUT;
 
@@ -21,7 +21,7 @@ void calculate_x_y(int *position, int *bias);
 
 INPUT calculate_direction(int *bias);
 
-INPUT read_input(int *bias, INPUT state)
+INPUT read_input(int *bias, INPUT state);
 
 void read_touch_buttons(int *buttons);
 

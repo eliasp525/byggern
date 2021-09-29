@@ -73,15 +73,16 @@ int main() {
     // }
 
     oled_reset();
-    oled_goto_page(4);
-    oled_goto_column(0);
+    oled_goto_position(0, 0);
 
     // for (int i = 1; i < 10; i += 1) {
     //     write_d(i, 0xFF);
     // }
 
     // oled_print('Q');
-    printo("Hello world!");
+    printo("Hello world!", 0);
+    oled_goto_position(0, 7);
+    printo("Hello world!", 1);
 
     _delay_ms(5000);
 
@@ -92,8 +93,12 @@ int main() {
     menu_elements[1] = "Option 2";
     menu_elements[2] = "Option 3";
     menu_elements[3] = "Exit";
+    menu_elements[4] = "";
+    menu_elements[5] = "";
+    menu_elements[6] = "";
+    menu_elements[7] = "===MAIN MENU====";
 
-    menu_init(menu_elements);
+    run_menu(bias, menu_elements);
 
     while (1) {
         // printf("Y: %d \r\n", read_adc_channel(0));

@@ -57,13 +57,13 @@ INPUT read_input(int *bias, INPUT state){
             return new_state;
         }
         else if (!read_joystick_button()){
-            delay_us(5);
+            _delay_us(5);
             while(!read_joystick_button()){
-                delay_us(5);
+                _delay_us(5);
             }
             return ANALOG_PRESS;
         }
-        delay_us(5);
+        _delay_us(5);
     }
 }
 

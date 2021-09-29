@@ -5,7 +5,6 @@
 #include <stdio.h>
 
 #include "constants.h"
-#include "util/delay.h"
 
 void USART_init(unsigned int ubrr);
 int USART_transmit(unsigned char data);
