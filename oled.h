@@ -2,6 +2,8 @@
 #define OLED_H
 
 #include <util/delay.h>
+#include <stdio.h>
+#include <avr/pgmspace.h>
 
 #include "constants.h"
 #include "external_memory.h"

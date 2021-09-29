@@ -10,7 +10,7 @@ void oled_goto_column(uint8_t column) {
         printf('column reset to 0\r\n');
         column = 0;
     }
-    uint8_t lower_nibble = column & 0xF;
+    uint8_t lower_nibble = column & 0xf ;
     uint8_t upper_nibble = (column >> 4) | 0x10;
     printf('\r\n');
     printf('%d\r\n', lower_nibble);
@@ -43,12 +43,12 @@ void oled_print(char letter) {
         printf('ERROR: unsupported letter');
         return;
     }
-
+    
     uint8_t font_index = letter - 32;
 
-    // using font5
-    for (uint8_t i = 0; i < 5; i++) {
-        uint8_t letter_pixels = pgm_read_byte(&(font5[font_index][i]));
+    // using font8
+    for (uint8_t i = 0; i < 8; i++) {
+        uint8_t letter_pixels = pgm_read_byte(&(font8[font_index][i]));
         write_d(letter_pixels);
     }
 }

@@ -79,11 +79,11 @@ int main() {
     //     write_d(i, 0xFF);
     // }
 
-    // oled_print('q');
+    oled_print('Q');
 
-    _delay_ms(5000);
+    //_delay_ms(5000);
 
-    oled_reset();
+    //oled_reset();
 
     while (1) {
         // printf("Y: %d \r\n", read_adc_channel(0));
