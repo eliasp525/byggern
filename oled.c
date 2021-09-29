@@ -102,6 +102,7 @@ void oled_goto_position(uint8_t column, uint8_t page) {
 }
 
 void oled_draw_star(){
+    oled_reset();
     oled_goto_position(54, 1);
     for (uint8_t i = 0; i < 19; i++) {
         uint8_t letter_pixels = pgm_read_byte(&(star[0][i]));
@@ -147,6 +148,9 @@ void run_menu(int* bias, char* menu_elements[]){
             current_option = (current_option + 1) % (TOTAL_PAGES - 4);
             break;
         case ANALOG_PRESS:
+            oled_draw_star();
+            _delay_ms(1500);
+            oled_reset();
             break;
         default:
             break;

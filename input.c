@@ -67,6 +67,7 @@ INPUT read_input(int *bias, INPUT state){
             while(!read_joystick_button()){
                 _delay_us(5);
             }
+            
             return ANALOG_PRESS;
         }
         _delay_ms(500);
@@ -84,7 +85,8 @@ void read_sliders(int* sliders){
 }
 
 uint8_t read_joystick_button(){
-    return  (2 >> !(PIND & ( 1 << PD2))); //is pulled low on trigger
+    return  (1 >> !(PIND & ( 1 << PD2))); //is pulled low on trigger
+
 }
 
 // How's it going?
