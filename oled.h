@@ -26,11 +26,11 @@ void oled_reset();
 
 void oled_clear_page(uint8_t page);
 
-void oled_print(char letter);
-
 void printo(char* string);
 
 void oled_goto_position(uint8_t column, uint8_t page);
+
+void menu_init(char* menu_elements[]);
 
 // uint8_t menu_loop(char *menu_elements, int *position);
 

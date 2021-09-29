@@ -34,7 +34,7 @@ void calculate_x_y(int *joystick_position, int *bias){
 }
 
 
-DIRECTION calculate_direction(int *bias){
+INPUT calculate_direction(int *bias){
     int x = read_adc_channel(X_DIRECTION) - bias[0];
     int y = read_adc_channel(Y_DIRECTION) - bias[1];
 
@@ -48,9 +48,25 @@ DIRECTION calculate_direction(int *bias){
         if (y > 158) {return UP;}
         else {return DOWN;}
     }
-
-
 }
+
+INPUT read_input(int *bias, INPUT state){
+    while(1){
+        INPUT new_state = calculate_direction(bias);
+        if (state != new_state){
+            return new_state;
+        }
+        else if (!read_joystick_button()){
+            delay_us(5);
+            while(!read_joystick_button()){
+                delay_us(5);
+            }
+            return ANALOG_PRESS;
+        }
+        delay_us(5);
+    }
+}
+
 void read_touch_buttons(int *buttons){
     buttons[0] = 2 >> (PINB & (1 << PB2));
     buttons[1] = 3 >> (PINB & (1 << PB3));
@@ -64,3 +80,8 @@ void read_sliders(int* sliders){
 uint8_t read_joystick_button(){
     return  (2 >> !(PIND & ( 1 << PD2))); //is pulled low on trigger
 }
+
+// How's it going?
+// går bra, vi får displaya "hello world!" på oledn!!
+// Konge!
+//Det e en chat hvis vi trykke på luuveshare på si

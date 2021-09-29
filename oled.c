@@ -38,7 +38,7 @@ void oled_clear_page(uint8_t page) {
     }
 }
 
-void oled_print(char letter) {
+void oled_print(char letter, uint) {
     if (letter < 32 || letter > 126) {
         printf('ERROR: unsupported letter');
         return;
@@ -117,4 +117,48 @@ void oled_goto_position(uint8_t column, uint8_t page) {
 // uint8_t menu_loop(char *menu_elements, int *position) {
 //     if (read_joystick_button()) {
 //     }
+// }
+
+void menu_init(char* menu_elements[]){
+    oled_reset();
+    for (uint8_t i = 0; i < TOTAL_PAGES; i++){
+        oled_goto_page(i);
+        oled_goto_column(0);
+        printo(menu_elements[i]);
+    }
+}
+
+void run_menu(int* bias, char* menu_elements[]){
+    uint8_t selected_option = 0; 
+    INPUT input = NEUTRAL;
+    while(1){
+        input = read_input(bias, input);
+        switch (input)
+        {        
+        case UP:
+            selected_option = (selected_option - 1) % TOTAL_PAGES
+            break;
+        case DOWN:
+            selected_option = (selected_option + 1) % TOTAL_PAGES
+            break;
+        case ANALOG_PRESS:
+            break;
+        }
+        oled_goto_page(selected_option);
+        oled_goto_column(0);
+        
+        printo(invert_text(menu_elements[selected_option]));
+        
+        // invert all bits in selected page
+    }
+}
+
+void printo_inverted(char* string){
+    for (uint8_t i = 0; string[i] != 0; i++){
+        oled_print(string[i]);
+    }
+}
+
+// uint8_t offset_for_centered_text(char* text){
+//     if (strlen(text) > OLED_WIDTH)
 // }

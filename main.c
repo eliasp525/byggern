@@ -83,9 +83,17 @@ int main() {
     // oled_print('Q');
     printo("Hello world!");
 
-    //_delay_ms(5000);
+    _delay_ms(5000);
 
     //oled_reset();
+
+    char* menu_elements[TOTAL_PAGES];
+    menu_elements[0] = "Option 1";
+    menu_elements[1] = "Option 2";
+    menu_elements[2] = "Option 3";
+    menu_elements[3] = "Exit";
+
+    menu_init(menu_elements);
 
     while (1) {
         // printf("Y: %d \r\n", read_adc_channel(0));
