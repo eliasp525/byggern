@@ -12,9 +12,6 @@ void oled_goto_column(uint8_t column) {
     }
     uint8_t lower_nibble = column & 0xf ;
     uint8_t upper_nibble = (column >> 4) | 0x10;
-    //printf('\r\n');
-    //printf('%d\r\n', lower_nibble);
-    //printf('%d\r\n', upper_nibble);
 
     write_c(lower_nibble);
     write_c(upper_nibble);
@@ -104,10 +101,23 @@ void oled_goto_position(uint8_t column, uint8_t page) {
     oled_goto_page(page);
 }
 
+void oled_draw_star(){
+    oled_goto_position(54, 1);
+    for (uint8_t i = 0; i < 19; i++) {
+        uint8_t letter_pixels = pgm_read_byte(&(star[0][i]));
+        write_d(letter_pixels);
+    }
+    oled_goto_position(54, 2);
+    for (uint8_t i = 0; i < 19; i++) {
+        uint8_t letter_pixels = pgm_read_byte(&(star[1][i]));
+        write_d(letter_pixels);
+    }
+}
+
 // --------MENU---------
 
 void refresh_menu(char* menu_elements[], uint8_t selected_option){
-    oled_reset();
+    //oled_reset(); dont need to reset the screen when we are overwriting all pages anyways?
     for (uint8_t i = 0; i < TOTAL_PAGES; i++){
         oled_goto_position(0, i);
         uint8_t invert = 0;
@@ -120,6 +130,7 @@ void refresh_menu(char* menu_elements[], uint8_t selected_option){
 
 void run_menu(int* bias, char* menu_elements[]){
     uint8_t selected_option = 0;
+    oled_reset(); //put reset here instead of in refresh_menu()
     refresh_menu(menu_elements, selected_option);
     INPUT input = NEUTRAL;
     while(1){
@@ -128,17 +139,20 @@ void run_menu(int* bias, char* menu_elements[]){
         {        
         case UP:
             if (selected_option == 0){
-                selected_option = TOTAL_PAGES;
+                selected_option = TOTAL_PAGES - 1;
             }
             selected_option = selected_option - 1;
             break;
         case DOWN:
-            selected_option = (selected_option + 1) % TOTAL_PAGES;
+            selected_option = (selected_option + 1) % (TOTAL_PAGES - 1);
             break;
         case ANALOG_PRESS:
             break;
+        default:
+            break;
         }
         refresh_menu(menu_elements, selected_option);
+        _delay_us(10);
     }
 }
 

@@ -7,4 +7,6 @@ const unsigned char font5[95][5];
 
 const unsigned char font4[95][4];
 
+const unsigned char star[2][19];
+
 #endif

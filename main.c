@@ -18,25 +18,11 @@ int main() {
     USART_init(MYUBRR);
 
     fdevopen(USART_transmit, USART_receive);
-    // for (int i = 0; i < 5; i++)
-    // {
-    //     set_bit(PORTA,1);
-    //     _delay_ms(100);
-    //     clear_bit(PORTA,1);
-    //     _delay_ms(100);
-    //     // printf("f ord\n");
-    // }
-
-    // USART_transmit(USART_receive());
 
     config_external_memory();
 
-    // EXTERNAL_MEMORY->SRAM[0] = 0xFF;
-    // printf( "Value: %d \r\n", EXTERNAL_MEMORY->SRAM[0]);
-
     PWM_init();
 
-    // SRAM_test();
     int bias[2];  // X is index 0, Y is index 1
     bias[0] = 0;
     bias[1] = 0;
@@ -56,33 +42,14 @@ int main() {
 
     oled_init();
 
-    // for(int j = 0; j < 3; j++){
-    //     int addr = 0xb0 + j;
-    //     for(int i = 0; i < 127; i++){
-    //         EXTERNAL_MEMORY->OLED_DATA[i] = 0xFF;
-    //         EXTERNAL_MEMORY->OLED_DATA[i+1] = 0x00;
-    //     }
-    //     write_c(addr);
-    // }
-    // for(int j = 3; j < 8; j++){
-    //     int addr = 0xb0 + j;
-    //     for(int i = 1; i < 127; i++){
-    //         EXTERNAL_MEMORY->OLED_DATA[i] = 0x00;
-    //     }
-    //     write_c(addr);
-    // }
-
     oled_reset();
-    oled_goto_position(0, 0);
+    //led_goto_position(32, 1);
 
-    // for (int i = 1; i < 10; i += 1) {
-    //     write_d(i, 0xFF);
-    // }
+    oled_draw_star();
 
-    // oled_print('Q');
-    printo("Hello world!", 0);
-    oled_goto_position(0, 7);
-    printo("Hello world!", 1);
+    // printo("Hello world!", 0);
+    // oled_goto_position(0, 3);
+    // printo("Hello world!", 1);
 
     _delay_ms(5000);
 
@@ -100,19 +67,19 @@ int main() {
 
     run_menu(bias, menu_elements);
 
-    while (1) {
+    //while (1) {
         // printf("Y: %d \r\n", read_adc_channel(0));
         // printf("X: %d \r\n", read_adc_channel(1));
         // calculate_x_y(position, bias);
-        read_touch_buttons(buttons);
-        printf("\r\nButtons: L: %d,   R: %d", buttons[0], buttons[1]);
+        //read_touch_buttons(buttons);
+        //printf("\r\nButtons: L: %d,   R: %d", buttons[0], buttons[1]);
         // printf("Bias -  X: %d, Y: %d", bias[0], bias[1]);
         // printf("X: %d, Y: %d \r\n", position[0], position[1]);
         // printf("joystick direction : %d \r\n", calculate_direction(bias));
         // printf("Slider_left: %d \r\n", read_adc_channel(2));
         // printf("Slider_right: %d \r\n", read_adc_channel(3));
-        _delay_ms(500);
-    }
+        //_delay_ms(500);
+    //}
 
     return 0;
 }

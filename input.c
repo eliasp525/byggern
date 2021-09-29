@@ -38,14 +38,19 @@ INPUT calculate_direction(int *bias){
     int x = read_adc_channel(X_DIRECTION) - bias[0];
     int y = read_adc_channel(Y_DIRECTION) - bias[1];
 
-    if (y > 98 && y <158){
-        if (x > 158) {return RIGHT;}
-        else if (x < 98) {return LEFT;}
+    //printf("Y: %d \r\n", y);
+    //printf("X: %d \r\n", x);
+    //printf("BIAS Y: %d \r\n", bias[1]);
+    //printf("BIAS X: %d \r\n", bias[0]);
+
+    if (y > 78 && y <178){
+        if (x > 178) {return RIGHT;}
+        else if (x < 78) {return LEFT;}
         else{return NEUTRAL;}
     }
 
-    else if (x > 98 && x < 158){
-        if (y > 158) {return UP;}
+    else if (x > 78 && x < 178){
+        if (y > 178) {return UP;}
         else {return DOWN;}
     }
 }
@@ -54,6 +59,7 @@ INPUT read_input(int *bias, INPUT state){
     while(1){
         INPUT new_state = calculate_direction(bias);
         if (state != new_state){
+            //printf("joystick direction : %d \r\n", new_state);
             return new_state;
         }
         else if (!read_joystick_button()){
@@ -63,7 +69,7 @@ INPUT read_input(int *bias, INPUT state){
             }
             return ANALOG_PRESS;
         }
-        _delay_us(5);
+        _delay_ms(500);
     }
 }
 
