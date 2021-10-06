@@ -4,9 +4,12 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <util/delay.h>
+#include <avr/interrupt.h>
+#include <avr/io.h>
 
 #include "adc.h"
 #include "constants.h"
+#include "bit_operations.h"
 
 typedef enum { LEFT, RIGHT, UP, DOWN, NEUTRAL, ANALOG_PRESS } INPUT;
 
@@ -28,5 +31,7 @@ void read_touch_buttons(int *buttons);
 void read_sliders(int *sliders);
 
 uint8_t read_joystick_button();
+
+void interrupt_init();
 
 #endif

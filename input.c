@@ -1,5 +1,8 @@
 #include "input.h"
 
+#define I 7
+#define SREG 0x3F
+
 void calibrate_joystick_bias(int *bias){
     int x = 0;
     int y = 0;
@@ -89,7 +92,19 @@ uint8_t read_joystick_button(){
 
 }
 
-// How's it going?
-// går bra, vi får displaya "hello world!" på oledn!!
-// Konge!
-//Det e en chat hvis vi trykke på luuveshare på si
+void interrupt_init(){
+    sei(); //Global interrupt enable flag.
+    GICR = (1 << INT0)|(1 << INT1); // INT0 and INT1 external interrupt enabled 
+
+    set_bit(MCUCR, ISC01);
+    clear_bit(MCUCR, ISC00); // INT0 triggers on falling edge
+
+    set_bit(MCUCR, ISC11);
+    clear_bit(MCUCR, ISC10); // INT1 triggers on falling edge
+}
+
+ISR(INT0_vect){
+    printf("interrupt 0 triggered\r\n");
+}
+
+

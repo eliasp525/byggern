@@ -7,7 +7,7 @@
 #include "constants.h"
 
 void USART_init(unsigned int ubrr);
-int USART_transmit(unsigned char data);
-int USART_receive();
+void USART_transmit(unsigned char data);
+unsigned char USART_receive();
 
 #endif

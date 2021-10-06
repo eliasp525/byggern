@@ -12,13 +12,22 @@
 #include "sram_test.h"
 #include "uart.h"
 #include "spi.h"
-
+#include "mcp2515.h"
+#include "can.h"
+#include "mcp2515_registers.h"
 
 #include <util/delay.h> //this must be after constants.h
+
+uint8_t interrupt_flag = 0;
+
+ISR(INT1_vect){
+    interrupt_flag = 1;
+}
 
 int main() {
     DDRA = 0;
     USART_init(MYUBRR);
+    interrupt_init();
 
     fdevopen(USART_transmit, USART_receive);
 
@@ -69,10 +78,59 @@ int main() {
     menu_elements[7] = "===MAIN MENU====";
 
     //run_menu(bias, menu_elements);
-    spi_master_init();
+
+    can_init();
+
     while (1) {
-        printf("Recieved SPI data: %d\r\n", spi_master_transceive('U')); //0b01010101
-        _delay_ms(50);
+
+        if (interrupt_flag == 1){
+            uint8_t int_val = read_interrupt_source();
+            printf("INTERRUPT!!!!!!!\r\n");
+            switch(int_val){
+
+                case INT_TX0:
+                    printf("interrupt on TX0");
+                    clear_interrupt_bit(MCP_TX0IF);
+                    break;
+
+                case INT_TX1:
+
+                    clear_interrupt_bit(MCP_TX1IF);
+                    break;
+
+                case INT_TX2:
+
+                    clear_interrupt_bit(MCP_TX2IF);
+                    break;
+
+                case INT_RX0:
+                    
+                    clear_interrupt_bit(MCP_RX0IF);
+                    break;
+
+                case INT_RX1:
+                    
+                    clear_interrupt_bit(MCP_RX1IF);
+                    break;
+
+                default:
+                    printf("ERROR: Undefined interrupt\r\n");
+                    break;
+            }
+        }
+
+        // mcp_write(0b00110110, 'h');
+        // printf("mcp register TXB0D0: %d\n\r", mcp_read(0b00110110));
+        // printf("mcp register TXB0D0: %c\n\r", mcp_read(0b00110110));
+        // printf("mcp status-register : %c\n\r", mcp_read_status());
+        
+        char str[8] = "abcdefgh";
+
+        can_msg message = {.id = 1, .data = str, .len = 8};
+
+        can_send_msg(message);
+        _delay_ms(2000);
+
         // printf("Y: %d \r\n", read_adc_channel(0));
         // printf("X: %d \r\n", read_adc_channel(1));
         // calculate_x_y(position, bias);
