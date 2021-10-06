@@ -11,6 +11,7 @@
 #include "oled.h"
 #include "sram_test.h"
 #include "uart.h"
+#include "spi.h"
 
 
 #include <util/delay.h> //this must be after constants.h
@@ -67,9 +68,11 @@ int main() {
     menu_elements[6] = "";
     menu_elements[7] = "===MAIN MENU====";
 
-    run_menu(bias, menu_elements);
-
-    //while (1) {
+    //run_menu(bias, menu_elements);
+    spi_master_init();
+    while (1) {
+        printf("Recieved SPI data: %d\r\n", spi_master_transceive('U')); //0b01010101
+        _delay_ms(50);
         // printf("Y: %d \r\n", read_adc_channel(0));
         // printf("X: %d \r\n", read_adc_channel(1));
         // calculate_x_y(position, bias);
@@ -81,7 +84,7 @@ int main() {
         // printf("Slider_left: %d \r\n", read_adc_channel(2));
         // printf("Slider_right: %d \r\n", read_adc_channel(3));
         //_delay_ms(500);
-    //}
+    }
 
     return 0;
 }
