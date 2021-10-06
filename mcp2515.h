@@ -5,8 +5,10 @@
 
 void init_mcp();
 
-void read_mcp();
+char read_mcp(char address);
 
-void write_mcp();
+void write_mcp(char address, char data);
+
+void request_to_send();
 
 #endif

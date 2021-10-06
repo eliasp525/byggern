@@ -3,8 +3,7 @@
 #define RESET_INSTRUCTION 0b11000000
 #define READ_INSTRUCTION 0b00000011
 #define WRITE_INSTRUCTION 0b00000010
-#define RTS_INSTRUCTION(TXB0, TXB1, TXB2) (0b10000000 | (TXB0 | (1<<TXB1) | (2<<TXB2)))
-#define set_bit(reg, bit) (reg |= (1 << bit))
+#define RTS_INSTRUCTION(transmit_buffer) (0b10000000 | transmit_buffer)) //transmit_buffer between 0 and 8
 #define BIT_MODIFY_INSTRUCTION 0b00000101
 
 void init_mcp(){
@@ -36,6 +35,6 @@ void write_mcp(char address, char data){
 
 void request_to_send(){
     start_transmission();
-    spi_master_transceive()
+    spi_master_transceive(0);
     end_transmission();
 }
