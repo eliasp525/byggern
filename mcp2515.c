@@ -53,6 +53,7 @@ void mcp_read_array(can_msg* message, char start_address){
         message->data[i] = spi_master_transceive(0);
         printf("RX_DATA[%d]: %c\r\n", i, message->data[i]);
     }
+    // message->data[len+1] = '\0';
     end_transmission();
 }
 

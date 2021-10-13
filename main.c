@@ -83,14 +83,14 @@ int main() {
 
     while (1) {
 
-        char str[8] = "abcdefgh";
+        char *str = "abcdefgh";
 
-        can_msg message = {.id = 1, .data = &str, .len = 8};
+        can_msg message = {.id = 1, .data = str, .len = 8};
 
         can_send_msg(message);
         _delay_ms(5000);
 
-        char rec_data[8] = "";
+        char rec_data[9] = "";
 
         can_msg receive_message = {.id = 1, .data = &rec_data , .len = 8};
 
@@ -120,13 +120,14 @@ int main() {
                 case INT_RX0:
                     printf("interrupt on RX0\r\n");
                     can_recieve_msg(&receive_message, 0);
-                    printf("Received message: %.8s\r\n", receive_message.data);
+                    printf("Received message: %s \r\n", receive_message.data);
                     clear_interrupt_bit(MCP_RX0IF);
                     break;
 
                 case INT_RX1:
                     printf("interrupt on RX1\r\n");
                     can_recieve_msg(&receive_message, 1);
+                    printf("Received message: %s \r\n", receive_message.data);
                     clear_interrupt_bit(MCP_RX1IF);
                     break;
 
