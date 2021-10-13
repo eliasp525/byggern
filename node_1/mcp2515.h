@@ -10,6 +10,23 @@ typedef struct{
     uint8_t len;
 }can_msg;
 
+typedef enum {
+    normal = 0b000, 
+    sleep = 0b001, 
+    loopback = 0b010, 
+    listen_only = 0b011, 
+    configuration = 0b100
+} MODES;
+
+
+void mcp_init();
+
+void mcp_set_can_mode(uint8_t canctrl, MODES mode);
+
+void mcp_clear_interrupt_bit(uint8_t int_bit);
+
+uint8_t mcp_read_interrupt();
+
 unsigned char mcp_read(char address);
 
 void mcp_write(char address, char data);
@@ -23,8 +40,8 @@ char mcp_read_status();
 
 void mcp_bit_modify(char address, char mask, char data);
 
-void mcp_write_array(char start_address, char* data, char len);
+void mcp_write_buffer(char start_address, char* data, char len);
 
-void mcp_read_array(can_msg* message, char start_address);
+void mcp_read_buffer(can_msg* message, char start_address);
 
 #endif

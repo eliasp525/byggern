@@ -79,56 +79,48 @@ int main() {
 
     //run_menu(bias, menu_elements);
 
-    can_init();
+    mcp_init();
 
     while (1) {
 
-        char *str = "abcdefgh";
-
-        can_msg message = {.id = 1, .data = str, .len = 8};
-
-        can_send_msg(message);
-        _delay_ms(5000);
-
+        _delay_ms(500);
         char rec_data[9] = "";
 
         can_msg receive_message = {.id = 1, .data = &rec_data , .len = 8};
 
         while (interrupt_flag == 1){
             
-            uint8_t int_val = read_interrupt_source();
+            uint8_t int_val = mcp_read_interrupt();
             printf("Value interrupt: %d\r\n", int_val);
             switch(int_val){
 
                 case INT_TX0:
-                    printf("CANINTF (before): %x\r\n", mcp_read(MCP_CANINTF));
                     printf("interrupt on TX0\r\n");
-                    clear_interrupt_bit(MCP_TX0IF);
-                    printf("CANINTF (after clearing): %x\r\n", mcp_read(MCP_CANINTF));
+                    mcp_clear_interrupt_bit(MCP_TX0IF);
                     break;
 
                 case INT_TX1:
                     printf("interrupt on TX1\r\n");
-                    clear_interrupt_bit(MCP_TX1IF);
+                    mcp_clear_interrupt_bit(MCP_TX1IF);
                     break;
 
                 case INT_TX2:
                     printf("interrupt on TX2\r\n");
-                    clear_interrupt_bit(MCP_TX2IF);
+                    mcp_clear_interrupt_bit(MCP_TX2IF);
                     break;
 
                 case INT_RX0:
                     printf("interrupt on RX0\r\n");
                     can_recieve_msg(&receive_message, 0);
                     printf("Received message: %s \r\n", receive_message.data);
-                    clear_interrupt_bit(MCP_RX0IF);
+                    mcp_clear_interrupt_bit(MCP_RX0IF);
                     break;
 
                 case INT_RX1:
                     printf("interrupt on RX1\r\n");
                     can_recieve_msg(&receive_message, 1);
                     printf("Received message: %s \r\n", receive_message.data);
-                    clear_interrupt_bit(MCP_RX1IF);
+                    mcp_clear_interrupt_bit(MCP_RX1IF);
                     break;
 
                 default:
@@ -144,6 +136,12 @@ int main() {
         // printf("mcp register TXB0D0: %c\n\r", mcp_read(0b00110110));
         // printf("mcp status-register : %c\n\r", mcp_read_status());
         
+        char *str = "abcdefgh";
+
+        can_msg message = {.id = 1, .data = str, .len = 8};
+
+        can_send_msg(message);
+        _delay_ms(5000);
 
         
 
