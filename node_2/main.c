@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdarg.h>
-#include "uart_and_printf/uart.h"
-#include "uart_and_printf/printf-stdarg.h"
+#include "uart.h"
+#include "printf-stdarg.h"
 
 #include "sam.h"
 
@@ -15,9 +15,12 @@ int main()
     configure_uart();
     printf("Hello World\n\r");
 
+    // PIOA->PIO_PA19 = 1;
+    // PIOA->PIO_PA20 = 1;
+
     while (1)
-    {
-        /* code */
+    {   
+        
     }
     
 }
