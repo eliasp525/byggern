@@ -56,12 +56,25 @@ void can_send_msg(can_msg msg){
     printf("MCP_TXB0DLC: %d\r\n", mcp_read(MCP_TXB0DLC));
     mcp_write_array(MCP_TXB0D0, msg.data, msg.len);
     mcp_bit_modify(MCP_TXB0CTRL, 0b1000, 0b1000);
+    // mcp_request_to_send(1,0,0);
         // printf("MCP_TXB0DLC: %d\r\n", mcp_read(MCP_TXB0DLC));
 }
 
 
-uint8_t can_recieve_msg(){
-
+void can_recieve_msg(can_msg* message, uint8_t buffer){
+    uint8_t start_address;
+    switch (buffer)
+    {
+    case 0:
+        start_address = MCP_RXB0D0;
+        message->len  = mcp_read(MCP_RXB0DLC) & 0x0F; //Only read last four bits
+        break;
+    case 1:
+        start_address = MCP_RXB1D0;
+        message->len = mcp_read(MCP_RXB1DLC) & 0x0F; //Only read last four bits
+        break;
+    }
+    mcp_read_array(message, start_address);
 }
 
 void clear_interrupt_bit(uint8_t int_bit){
@@ -69,7 +82,6 @@ void clear_interrupt_bit(uint8_t int_bit){
 }
 
 uint8_t read_interrupt_source(){
-    uint8_t value = mcp_read(MCP_CANSTAT) & 0b111;
-    printf("value interrupt: %d\r\n", value);
+    uint8_t value = mcp_read(MCP_CANSTAT) & 0b1110;
     return value;
 }

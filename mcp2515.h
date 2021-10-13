@@ -4,6 +4,12 @@
 #include "spi.h"
 #include "mcp2515_registers.h"
 
+typedef struct{
+    uint16_t id;
+    char* data;
+    uint8_t len;
+}can_msg;
+
 unsigned char mcp_read(char address);
 
 void mcp_write(char address, char data);
@@ -18,5 +24,7 @@ char mcp_read_status();
 void mcp_bit_modify(char address, char mask, char data);
 
 void mcp_write_array(char start_address, char* data, char len);
+
+void mcp_read_array(can_msg* message, char start_address);
 
 #endif

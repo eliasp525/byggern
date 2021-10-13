@@ -4,12 +4,6 @@
 #include <stdio.h>
 #include "mcp2515.h"
 
-typedef struct{
-    uint16_t id;
-    uint8_t data;
-    uint8_t len;
-}can_msg;
-
 typedef enum {
     normal = 0b000, 
     sleep = 0b001, 
@@ -24,7 +18,7 @@ void can_set_mode(uint8_t canctrl, MODES mode);
 
 void can_send_msg(can_msg msg);
 
-uint8_t can_recieve_msg();
+void can_recieve_msg(can_msg* message, uint8_t buffer);
 
 void clear_interrupt_bit(uint8_t int_bit);
 

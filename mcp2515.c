@@ -35,8 +35,23 @@ void mcp_write_array(char start_address, char* data, char len){
     start_transmission();
     spi_master_transceive(WRITE_INSTRUCTION);
     spi_master_transceive(start_address);
-    for( char i = 0; i < len; i ++){
-       spi_master_transceive(data[i]); 
+    for( char i = 0; i < len; i++){
+        printf("TX_DATA[%d]: %c\r\n", i, data[i]);
+        spi_master_transceive(data[i]); 
+    }
+    end_transmission();
+}
+
+void mcp_read_array(can_msg* message, char start_address){
+    start_transmission();
+    spi_master_transceive(READ_INSTRUCTION);
+    spi_master_transceive(start_address);
+    uint8_t len = message->len;
+    printf("Length of message: %d\r\n", len);
+    for(uint8_t i = 0; i < len; i++){
+        // printf("i: %d\r\n", i);
+        message->data[i] = spi_master_transceive(0);
+        printf("RX_DATA[%d]: %c\r\n", i, message->data[i]);
     }
     end_transmission();
 }
