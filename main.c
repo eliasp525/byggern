@@ -120,7 +120,7 @@ int main() {
                 case INT_RX0:
                     printf("interrupt on RX0\r\n");
                     can_recieve_msg(&receive_message, 0);
-                    printf("Received message: %d \r\n", receive_message.data);
+                    printf("Received message: %.8s\r\n", receive_message.data);
                     clear_interrupt_bit(MCP_RX0IF);
                     break;
 
