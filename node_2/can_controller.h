@@ -14,8 +14,9 @@
 
 #include <stdint.h>
 #define FOSC_NODE_2 12000000
-#define TIME_QUANTA 1/1600000
-#define BPR (TIME_QUANTA * FOSC_NODE_2)/2
+// #define BRP (TIME_QUANTA * FOSC_NODE_2)/2
+#define BRP 3
+#define TIME_QUANTA (2*BRP)/FOSC_NODE_2
 #define PHASE_2 6
 #define PHASE_1 7
 #define SJW 1
