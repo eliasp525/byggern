@@ -138,7 +138,7 @@ int main() {
         
         char *str = "abcdefgh";
 
-        can_msg message = {.id = 1, .data = str, .len = 8};
+        can_msg message = {.id = 1, .data = str, .len = 7};
 
         can_send_msg(message);
         printf("Sending message: %s" message.data);
