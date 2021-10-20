@@ -30,7 +30,7 @@ void mcp_init(){
     //printf("CANINTE: %x\r\n", mcp_read(MCP_CANINTE));
 
     //configure bit timing in CNFx registers
-    mcp_bit_modify(MCP_CNF1, 0xFF, 0x03); //Sets BRP to (3+1), SJW to 1
+    mcp_bit_modify(MCP_CNF1, 0xFF, 0x01); //Sets BRP to (1+1), SJW to 1
     mcp_bit_modify(MCP_CNF2, 0xFF, 0b10110001); //Sets PropSeg to (1+1), PS1 to (6+1), SAM to 0 (sample once), BTLMODE to 1 (set PS2 manually)
     mcp_bit_modify(MCP_CNF3, 0x07, 0x05); //Sets PS2 to (5+1)
 
