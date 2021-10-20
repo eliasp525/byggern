@@ -36,7 +36,6 @@ void CAN0_Handler( void )
 		
 		if(can_sr & CAN_SR_MB1)  //Mailbox 1 event
 		{
-
 			can_receive(&message, 1);
 		}
 		else if(can_sr & CAN_SR_MB2) //Mailbox 2 event
@@ -56,7 +55,7 @@ void CAN0_Handler( void )
 		}
 		if(DEBUG_INTERRUPT)printf("\n\r");
 
-		can_send(&message, 0);
+		//can_send(&message, 0);
 	}
 	
 	if(can_sr & CAN_SR_MB0)
