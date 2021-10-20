@@ -15,11 +15,11 @@ Copyright 2003 Kimberly Otten Software Consulting
 
 // Define Interrupt decoding
 
-#define INT_TX0 0b011
-#define INT_TX1 0b100
-#define INT_TX2 0b101
-#define INT_RX0 0b110
-#define INT_RX1 0b111
+#define INT_TX0 0b0110
+#define INT_TX1 0b1000
+#define INT_TX2 0b1010
+#define INT_RX0 0b1100
+#define INT_RX1 0b1110
 
 // Define MCP2515 register addresses
 
@@ -69,25 +69,33 @@ Copyright 2003 Kimberly Otten Software Consulting
 #define MCP_TXB1CTRL	0x40
 #define MCP_TXB2CTRL	0x50
 #define MCP_RXB0CTRL	0x60
-#define MCP_RXB0SIDH	0x61
 #define MCP_RXB1CTRL	0x70
-#define MCP_RXB1SIDH	0x71
 
 #define MCP_TXB0SIDL 0b00110010
 #define MCP_TXB1SIDL 0b01000010
 #define MCP_TXB2SIDL 0b01010010
+#define MCP_RXB0SIDL 0b01100010
+#define MCP_RXB1SIDL 0b01110010
+
 
 #define MCP_TXB0SIDH 0b00110001
 #define MCP_TXB1SIDH 0b01000001
 #define MCP_TXB2SIDH 0b01010001
+#define MCP_RXB0SIDH 0b01100001
+#define MCP_RXB1SIDH 0b01110001
 
 #define MCP_TXB0DLC 0b00110101
 #define MCP_TXB1DLC 0b01000101
 #define MCP_TXB2DLC 0b01010101
+#define MCP_RXB0DLC 0b01100101
+#define MCP_RXB1DLC 0b01110101
 
 #define MCP_TXB0D0 0b00110110
 #define MCP_TXB1D0 0b01000110
 #define MCP_TXB2D0 0b01010110
+#define MCP_RXB0D0 0b01100110
+#define MCP_RXB1D0 0b01110110
+
 
 
 #define MCP_TX_INT		0x1C		// Enable all transmit interrupts

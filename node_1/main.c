@@ -79,44 +79,56 @@ int main() {
 
     //run_menu(bias, menu_elements);
 
-    can_init();
+    mcp_init();
 
     while (1) {
 
-        if (interrupt_flag == 1){
-            uint8_t int_val = read_interrupt_source();
-            printf("INTERRUPT!!!!!!!\r\n");
+        _delay_ms(500);
+        char rec_data[9] = "";
+
+        can_msg receive_message = {.id = 1, .data = &rec_data , .len = 8};
+
+        while (interrupt_flag == 1){
+            
+            uint8_t int_val = mcp_read_interrupt();
+            printf("Value interrupt: %d\r\n", int_val);
             switch(int_val){
 
                 case INT_TX0:
-                    printf("interrupt on TX0");
-                    clear_interrupt_bit(MCP_TX0IF);
+                    printf("interrupt on TX0\r\n");
+                    mcp_clear_interrupt_bit(MCP_TX0IF);
                     break;
 
                 case INT_TX1:
-
-                    clear_interrupt_bit(MCP_TX1IF);
+                    printf("interrupt on TX1\r\n");
+                    mcp_clear_interrupt_bit(MCP_TX1IF);
                     break;
 
                 case INT_TX2:
-
-                    clear_interrupt_bit(MCP_TX2IF);
+                    printf("interrupt on TX2\r\n");
+                    mcp_clear_interrupt_bit(MCP_TX2IF);
                     break;
 
                 case INT_RX0:
-                    
-                    clear_interrupt_bit(MCP_RX0IF);
+                    printf("interrupt on RX0\r\n");
+                    can_recieve_msg(&receive_message, 0);
+                    printf("Received message: %s \r\n", receive_message.data);
+                    mcp_clear_interrupt_bit(MCP_RX0IF);
                     break;
 
                 case INT_RX1:
-                    
-                    clear_interrupt_bit(MCP_RX1IF);
+                    printf("interrupt on RX1\r\n");
+                    can_recieve_msg(&receive_message, 1);
+                    printf("Received message: %s \r\n", receive_message.data);
+                    mcp_clear_interrupt_bit(MCP_RX1IF);
                     break;
 
                 default:
                     printf("ERROR: Undefined interrupt\r\n");
                     break;
             }
+
+            if(mcp_read(MCP_CANINTF) == 0){interrupt_flag = 0;}
         }
 
         // mcp_write(0b00110110, 'h');
@@ -124,12 +136,14 @@ int main() {
         // printf("mcp register TXB0D0: %c\n\r", mcp_read(0b00110110));
         // printf("mcp status-register : %c\n\r", mcp_read_status());
         
-        char str[8] = "abcdefgh";
+        char *str = "abcdefgh";
 
         can_msg message = {.id = 1, .data = str, .len = 8};
 
         can_send_msg(message);
-        _delay_ms(2000);
+        _delay_ms(5000);
+
+        
 
         // printf("Y: %d \r\n", read_adc_channel(0));
         // printf("X: %d \r\n", read_adc_channel(1));
