@@ -45,10 +45,10 @@ void send_joystick_x_y(int *joystick_position, int *bias){
     str[0] = 'x';
     str[1] = x;
     str[2] = 'y';
-    str[3] = y
+    str[3] = y;
 
     can_msg message = {.id = 69, .data = str, .len = 3};
-    can_send_message(message)
+    can_send_msg(message);
 
 }
 
