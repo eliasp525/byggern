@@ -37,6 +37,22 @@ void calculate_x_y(int *joystick_position, int *bias){
 }
 
 
+void send_joystick_x_y(int *joystick_position, int *bias){
+    calculate_x_y(joystick_position, bias);
+    char x = (joystick_position[0]+100);
+    char y = (joystick_position[0]+100);
+    char str[4] = "";
+    str[0] = 'x';
+    str[1] = x;
+    str[2] = 'y';
+    str[3] = y
+
+    can_msg message = {.id = 69, .data = str, .len = 3};
+    can_send_message(message)
+
+}
+
+
 INPUT calculate_direction(int *bias){
     int x = read_adc_channel(X_DIRECTION) - bias[0];
     int y = read_adc_channel(Y_DIRECTION) - bias[1];

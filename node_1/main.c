@@ -136,12 +136,13 @@ int main() {
         // printf("mcp register TXB0D0: %c\n\r", mcp_read(0b00110110));
         // printf("mcp status-register : %c\n\r", mcp_read_status());
         
-        char *str = "abcdefgh";
+        //char *str[8] = "";
 
-        can_msg message = {.id = 1, .data = str, .len = 7};
+        //can_msg message = {.id = 1, .data = str, .len = 7};
 
-        can_send_msg(message);
-        printf("Sending message: %s\r\n", message.data);
+        //can_send_msg(message);
+        send_joystick_x_y(position, bias)
+        //printf("Sending message: %s\r\n", message.data);
         _delay_ms(5000);
 
         

@@ -7,6 +7,7 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
 
+#include "can.h"
 #include "adc.h"
 #include "constants.h"
 #include "bit_operations.h"
