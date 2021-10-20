@@ -9,7 +9,7 @@ void can_send_msg(can_msg msg){
     //printf("MCP_TXB0DLC: %d\r\n", mcp_read(MCP_TXB0DLC));
     mcp_write_buffer(MCP_TXB0D0, msg.data, msg.len);
     mcp_bit_modify(MCP_TXB0CTRL, 0b1000, 0b1000);
-    mcp_request_to_send(1,0,0);
+    // mcp_request_to_send(1,0,0);
     // printf("MCP_TXB0DLC: %d\r\n", mcp_read(MCP_TXB0DLC));
 }
 
