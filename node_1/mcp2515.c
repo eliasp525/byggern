@@ -30,7 +30,7 @@ void mcp_init(){
     //printf("CANINTE: %x\r\n", mcp_read(MCP_CANINTE));
 
     //printf("Mode was: %x\r\n", mcp_read(MCP_CANCTRL));
-    mcp_set_can_mode(MCP_CANCTRL, loopback); // set to loopback mode
+    mcp_set_can_mode(MCP_CANCTRL, normal); // set to loopback mode
     //printf("Mode has been set to: %x\r\n", mcp_read(MCP_CANCTRL));
 
     //printf("CANSTAT: %x\r\n", mcp_read(MCP_CANSTAT));
