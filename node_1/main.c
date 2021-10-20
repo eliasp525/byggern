@@ -141,7 +141,7 @@ int main() {
         can_msg message = {.id = 1, .data = str, .len = 7};
 
         can_send_msg(message);
-        printf("Sending message: %s" message.data);
+        printf("Sending message: %s\r\n", message.data);
         _delay_ms(5000);
 
         
