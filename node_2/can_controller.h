@@ -13,6 +13,14 @@
 #define CAN_CONTROLLER_H_
 
 #include <stdint.h>
+#define FOSC_NODE_2 12000000
+#define TIME_QUANTA 1/1600000
+#define BPR (TIME_QUANTA * FOSC_NODE_2)/2
+#define PHASE_2 6
+#define PHASE_1 7
+#define SJW 1
+#define SMP 0
+#define PROPAG 2 // same as prop_seg
 
 typedef struct can_message_t
 {

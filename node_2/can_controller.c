@@ -29,6 +29,14 @@ uint8_t can_init_def_tx_rx_mb(uint32_t can_br)
 	return can_init(can_br, 1, 2);
 }
 
+uint8_t can_default_init(){
+
+	uint32_t can_br = PHASE_2 | (PHASE_1 << 4) | (PROPAG << 8) | (SJW << 12) | (BRP << 16) | (SMP << 24);
+	return can_init_def_tx_rx_mb(can_br);
+}
+
+
+
 /**
  * \brief Initialize can bus
  *
