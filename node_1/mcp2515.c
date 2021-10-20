@@ -34,6 +34,10 @@ void mcp_init(){
     mcp_bit_modify(MCP_CNF2, 0xFF, 0b10110001); //Sets PropSeg to (1+1), PS1 to (6+1), SAM to 0 (sample once), BTLMODE to 1 (set PS2 manually)
     mcp_bit_modify(MCP_CNF3, 0x07, 0x05); //Sets PS2 to (5+1)
 
+    printf("CNF1: %x\r\n", mcp_read(MCP_CNF1));
+    printf("CNF2: %x\r\n", mcp_read(MCP_CNF2));
+    printf("CNF3: %x\r\n", mcp_read(MCP_CNF3));
+
     //printf("Mode was: %x\r\n", mcp_read(MCP_CANCTRL));
     mcp_set_can_mode(MCP_CANCTRL, normal); // set to loopback mode
     //printf("Mode has been set to: %x\r\n", mcp_read(MCP_CANCTRL));
