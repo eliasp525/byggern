@@ -42,7 +42,7 @@ int main(void)
     while (1) 
     {
 		if(message.id == 69){
-			printf("x_pos: %d, y_pos %d\r\n", message.data[0], message.data[1]);
+			printf("x_pos: %d, y_pos %d\r\n", (int8_t)message.data[0], (int8_t)message.data[1]);
 		}
 		
     }

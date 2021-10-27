@@ -14,7 +14,7 @@
 
 #include "can_controller.h"
 
-CAN_MESSAGE message;
+volatile CAN_MESSAGE message;
 
 void CAN0_Handler       ( void );
 
