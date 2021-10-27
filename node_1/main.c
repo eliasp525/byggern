@@ -131,7 +131,7 @@ int main() {
         //can_msg message = {.id = 1, .data = str, .len = 7};
 
         //can_send_msg(message);
-        calculate_x_y(position, bias)
+        calculate_x_y(position, bias);
 
         send_joystick_x_y(position, bias);
         //printf("Sending message: %s\r\n", message.data);
