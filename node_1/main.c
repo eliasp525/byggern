@@ -141,7 +141,7 @@ int main() {
         can_msg message = {.id = 1, .data = str, .len = 8};
 
         can_send_msg(message);
-        _delay_ms(5000);
+        _delay_ms(100);
 
         
 

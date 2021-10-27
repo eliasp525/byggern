@@ -11,10 +11,12 @@
 
 #ifndef CAN_INTERRUPT_H_
 #define CAN_INTERRUPT_H_
+
+#include "can_controller.h"
+
+CAN_MESSAGE message;
+
 void CAN0_Handler       ( void );
-
-
-
 
 
 
