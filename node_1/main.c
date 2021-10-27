@@ -35,22 +35,12 @@ int main() {
 
     PWM_init();
 
-    int bias[2];  // X is index 0, Y is index 1
-    bias[0] = 0;
-    bias[1] = 0;
+    int8_t bias[2] = {0,0};  // X is index 0, Y is index 1
+    int8_t position[2] = {0,0};
+    uint8_t buttons[2] = {0,0};
+    uint8_t slider[2] = {0,0};
+
     calibrate_joystick_bias(bias);
-
-    int position[2];
-    position[0] = 0;
-    position[1] = 0;
-
-    int buttons[2];
-    buttons[0] = 0;
-    buttons[1] = 0;
-
-    int slider[2];
-    slider[0] = 0;
-    slider[1] = 0;
 
     oled_init();
 
@@ -141,6 +131,8 @@ int main() {
         //can_msg message = {.id = 1, .data = str, .len = 7};
 
         //can_send_msg(message);
+        calculate_x_y(position, bias)
+
         send_joystick_x_y(position, bias);
         //printf("Sending message: %s\r\n", message.data);
         _delay_ms(5000);
@@ -153,7 +145,7 @@ int main() {
         //read_touch_buttons(buttons);
         //printf("\r\nButtons: L: %d,   R: %d", buttons[0], buttons[1]);
         // printf("Bias -  X: %d, Y: %d", bias[0], bias[1]);
-        // printf("X: %d, Y: %d \r\n", position[0], position[1]);
+        printf("X: %d, Y: %d \r\n", position[0], position[1]);
         // printf("joystick direction : %d \r\n", calculate_direction(bias));
         // printf("Slider_left: %d \r\n", read_adc_channel(2));
         // printf("Slider_right: %d \r\n", read_adc_channel(3));

@@ -17,9 +17,9 @@ void calibrate_joystick_bias(int *bias){
 }
 
 
-void calculate_x_y(int *joystick_position, int *bias){
-    int x = read_adc_channel(X_DIRECTION);
-    int y = read_adc_channel(Y_DIRECTION);
+void calculate_x_y(int8_t *joystick_position, int8_t *bias){
+    int8_t x = read_adc_channel(X_DIRECTION);
+    int8_t y = read_adc_channel(Y_DIRECTION);
     
     if(x - bias[0] - 128 > 0){
         joystick_position[0] = (x - bias[0] - 128)*100/(127-bias[0]);
@@ -37,17 +37,12 @@ void calculate_x_y(int *joystick_position, int *bias){
 }
 
 
-void send_joystick_x_y(int *joystick_position, int *bias){
-    calculate_x_y(joystick_position, bias);
-    char x = (joystick_position[0]+100);
-    char y = (joystick_position[1]+100);
-    char str[4] = "";
-    str[0] = 'x';
-    str[1] = x;
-    str[2] = 'y';
-    str[3] = y;
+void send_joystick_x_y(int *joystick_position){
+    char str[2] = "";
+    str[0] = joystick_position[0];
+    str[1] = joystick_position[1];
 
-    can_msg message = {.id = 69, .data = str, .len = 4};
+    can_msg message = {.id = 69, .data = str, .len = 2};
     can_send_msg(message);
 
 }
