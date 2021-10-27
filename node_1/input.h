@@ -31,4 +31,6 @@ uint8_t read_joystick_button();
 
 void interrupt_init();
 
+void send_joystick_x_y(int8_t *joystick_position);
+
 #endif

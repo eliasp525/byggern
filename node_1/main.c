@@ -102,7 +102,7 @@ int main() {
                 case INT_RX0:
                     printf("interrupt on RX0\r\n");
                     can_recieve_msg(&receive_message, 0);
-                    printf("Received message: %s \r\n", receive_message.data);
+                    printf("Received message: x %d y %d \r\n", receive_message.data[0], receive_message.data[1]);
                     mcp_clear_interrupt_bit(MCP_RX0IF);
                     break;
 
@@ -133,13 +133,13 @@ int main() {
         //can_send_msg(message);
         calculate_x_y(position, bias);
 
-        send_joystick_x_y(position, bias);
+        send_joystick_x_y(&position);
         //printf("Sending message: %s\r\n", message.data);
                 
         //read_touch_buttons(buttons);
         //printf("\r\nButtons: L: %d,   R: %d", buttons[0], buttons[1]);
         // printf("Bias -  X: %d, Y: %d", bias[0], bias[1]);
-        printf("X: %d, Y: %d \r\n", position[0], position[1]);
+        printf("MAIN X: %d, Y: %d \r\n", position[0], position[1]);
         // printf("joystick direction : %d \r\n", calculate_direction(bias));
         // printf("Slider_left: %d \r\n", read_adc_channel(2));
         // printf("Slider_right: %d \r\n", read_adc_channel(3));
