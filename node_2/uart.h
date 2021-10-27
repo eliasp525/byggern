@@ -1,7 +1,7 @@
 /*
  * uart.h
  *
- * Author: Gustav O. Often and Eivind H. Jï¿½lsgard
+ * Author: Gustav O. Often and Eivind H. Jølsgard
  *
  * For use in TTK4155 Embedded and Industrial Computer Systems Design
  * NTNU - Norwegian University of Science and Technology
@@ -15,9 +15,6 @@
 
 #include <stdint.h>
 #define UART_RINGBUFFER_SIZE 64
-
-#define UART_BAUDRATE 115200
-
 /*
  * Ringbuffer for receiving characters from  
  */

@@ -12,7 +12,7 @@
 
 #include "sam.h"
 
-#include "../uart_and_printf/printf-stdarg.h"
+#include "printf-stdarg.h"
 
 
 /**
@@ -28,6 +28,14 @@ uint8_t can_init_def_tx_rx_mb(uint32_t can_br)
 {
 	return can_init(can_br, 1, 2);
 }
+
+uint8_t can_default_init(){
+
+	uint32_t can_br = PHASE_2 | (PHASE_1 << 4) | (PROPAG << 8) | (SJW << 12) | (BRP << 16) | (SMP << 24);
+	return can_init_def_tx_rx_mb(can_br);
+}
+
+
 
 /**
  * \brief Initialize can bus
@@ -190,7 +198,7 @@ uint8_t can_receive(CAN_MESSAGE* can_msg, uint8_t rx_mb_id)
 			}
 			else
 			{
-				can_msg->data[i] = (uint8_t)(data_high & 0xff);
+				can_msg->data[i] = (char)(data_high & 0xff);
 				data_high = data_high >> 8;
 			}
 		}

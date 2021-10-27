@@ -38,8 +38,10 @@ void mcp_init(){
     // printf("CNF2: %x\r\n", mcp_read(MCP_CNF2));
     // printf("CNF3: %x\r\n", mcp_read(MCP_CNF3));
 
-    //printf("Mode was: %x\r\n", mcp_read(MCP_CANCTRL));
+    //printf("Mode was: %x\r\n", mcp_read(MCP_CANCTRL))
+  
     mcp_set_can_mode(MCP_CANCTRL, normal); // set mode
+    
     //printf("Mode has been set to: %x\r\n", mcp_read(MCP_CANCTRL));
 
     //printf("CANSTAT: %x\r\n", mcp_read(MCP_CANSTAT));
