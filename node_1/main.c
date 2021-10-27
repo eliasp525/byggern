@@ -73,7 +73,6 @@ int main() {
 
     while (1) {
 
-        _delay_ms(500);
         char rec_data[9] = "";
 
         can_msg receive_message = {.id = 1, .data = &rec_data , .len = 8};
@@ -81,11 +80,11 @@ int main() {
         while (interrupt_flag == 1){
             
             uint8_t int_val = mcp_read_interrupt();
-            printf("Value interrupt: %d\r\n", int_val);
+            // printf("Value interrupt: %d\r\n", int_val);
             switch(int_val){
 
                 case INT_TX0:
-                    printf("interrupt on TX0\r\n");
+                    // printf("interrupt on TX0\r\n");
                     mcp_clear_interrupt_bit(MCP_TX0IF);
                     break;
 
@@ -102,7 +101,7 @@ int main() {
                 case INT_RX0:
                     printf("interrupt on RX0\r\n");
                     can_recieve_msg(&receive_message, 0);
-                    printf("Received message: x %d y %d \r\n", receive_message.data[0], receive_message.data[1]);
+                    // printf("Received message: x %d y %d \r\n", receive_message.data[0], receive_message.data[1]);
                     mcp_clear_interrupt_bit(MCP_RX0IF);
                     break;
 
@@ -115,6 +114,7 @@ int main() {
 
                 default:
                     printf("ERROR: Undefined interrupt\r\n");
+                    mcp_bit_modify(MCP_CANINTF, 0xff, 0);
                     break;
             }
 
@@ -143,7 +143,7 @@ int main() {
         // printf("joystick direction : %d \r\n", calculate_direction(bias));
         // printf("Slider_left: %d \r\n", read_adc_channel(2));
         // printf("Slider_right: %d \r\n", read_adc_channel(3));
-        _delay_ms(500);
+        _delay_ms(10);
     }
 
     return 0;
