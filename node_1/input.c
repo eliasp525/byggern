@@ -18,8 +18,8 @@ void calibrate_joystick_bias(int8_t *bias){
 
 
 void calculate_x_y(int8_t *joystick_position, int8_t *bias){
-    int8_t x = read_adc_channel(X_DIRECTION);
-    int8_t y = read_adc_channel(Y_DIRECTION);
+    uint8_t x = read_adc_channel(X_DIRECTION);
+    uint8_t y = read_adc_channel(Y_DIRECTION);
     printf("calculate_x_y, node 1: {X: %d, Y: %d} \r\n", x, y);
     
     
