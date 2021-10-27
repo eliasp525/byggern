@@ -30,5 +30,8 @@ void pwm_servo_upd_duty_cycle(int8_t input){
 	else if (input < -100){
 		input = -100;	
 	}
+	else if (input*input < 5){
+		input = 0;
+	}
     REG_PWM_CDTYUPD5 = NOMINAL_DUTY_CYCLE + input * INPUT_SCALAR;
 }
