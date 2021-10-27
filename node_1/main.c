@@ -135,13 +135,7 @@ int main() {
 
         send_joystick_x_y(position, bias);
         //printf("Sending message: %s\r\n", message.data);
-        _delay_ms(5000);
-
-        
-
-        // printf("Y: %d \r\n", read_adc_channel(0));
-        // printf("X: %d \r\n", read_adc_channel(1));
-        // calculate_x_y(position, bias);
+                
         //read_touch_buttons(buttons);
         //printf("\r\nButtons: L: %d,   R: %d", buttons[0], buttons[1]);
         // printf("Bias -  X: %d, Y: %d", bias[0], bias[1]);
@@ -149,7 +143,7 @@ int main() {
         // printf("joystick direction : %d \r\n", calculate_direction(bias));
         // printf("Slider_left: %d \r\n", read_adc_channel(2));
         // printf("Slider_right: %d \r\n", read_adc_channel(3));
-        //_delay_ms(500);
+        _delay_ms(500);
     }
 
     return 0;

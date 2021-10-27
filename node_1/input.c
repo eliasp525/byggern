@@ -3,7 +3,7 @@
 #define I 7
 #define SREG 0x3F
 
-void calibrate_joystick_bias(int *bias){
+void calibrate_joystick_bias(int8_t *bias){
     int x = 0;
     int y = 0;
     for (uint8_t i = 0; i < 10; ++i){
@@ -37,7 +37,7 @@ void calculate_x_y(int8_t *joystick_position, int8_t *bias){
 }
 
 
-void send_joystick_x_y(int *joystick_position){
+void send_joystick_x_y(int8_t *joystick_position){
     char str[2] = "";
     str[0] = joystick_position[0];
     str[1] = joystick_position[1];
@@ -48,9 +48,9 @@ void send_joystick_x_y(int *joystick_position){
 }
 
 
-INPUT calculate_direction(int *bias){
-    int x = read_adc_channel(X_DIRECTION) - bias[0];
-    int y = read_adc_channel(Y_DIRECTION) - bias[1];
+INPUT calculate_direction(int8_t *bias){
+    int8_t x = read_adc_channel(X_DIRECTION) - bias[0];
+    int8_t y = read_adc_channel(Y_DIRECTION) - bias[1];
 
     //printf("Y: %d \r\n", y);
     //printf("X: %d \r\n", x);
@@ -69,7 +69,7 @@ INPUT calculate_direction(int *bias){
     }
 }
 
-INPUT read_input(int *bias, INPUT state){
+INPUT read_input(int8_t *bias, INPUT state){
     while(1){
         INPUT new_state = calculate_direction(bias);
         if (state != new_state){
@@ -84,16 +84,16 @@ INPUT read_input(int *bias, INPUT state){
             
             return ANALOG_PRESS;
         }
-        _delay_ms(500);
+        _delay_us(5);
     }
 }
 
-void read_touch_buttons(int *buttons){
+void read_touch_buttons(uint8_t *buttons){
     buttons[0] = 2 >> (PINB & (1 << PB2));
     buttons[1] = 3 >> (PINB & (1 << PB3));
 }
 
-void read_sliders(int* sliders){
+void read_sliders(uint8_t* sliders){
     sliders[0] = read_adc_channel(3); 
     sliders[1] = read_adc_channel(4); 
 }
