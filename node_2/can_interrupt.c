@@ -16,7 +16,7 @@
 #include "printf-stdarg.h"
 
 
-#define DEBUG_INTERRUPT 1
+#define DEBUG_INTERRUPT 0
 
 /**
  * \brief CAN0 Interrupt handler for RX, TX and bus error interrupts
@@ -51,7 +51,7 @@ void CAN0_Handler( void )
 		if(DEBUG_INTERRUPT)printf("message data length: %d\n\r", message.data_length);
 		for (int i = 0; i < message.data_length; i++)
 		{
-			if(DEBUG_INTERRUPT)printf("%d ", message.data[i]);
+			if(DEBUG_INTERRUPT)printf("%d ", (int8_t)message.data[i]);
 		}
 		if(DEBUG_INTERRUPT)printf("\n\r");
 
