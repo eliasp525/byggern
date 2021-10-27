@@ -3,7 +3,7 @@
 //pulled from the atmega docs and modified to our needs
 void spi_master_init(){
 /* Set !SS, MOSI and SCK output, all others input */
-DDRB = (1 << DDB4)|(1<<DDB5)|(1<<DDB7);
+DDRB = DDRB | (1 << DDB4)|(1<<DDB5)|(1<<DDB7);
 /* Enable SPI, Master, set clock rate default fck/4 */
 SPCR = (1<<SPE)|(1<<MSTR);
 }
