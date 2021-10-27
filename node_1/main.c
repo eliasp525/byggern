@@ -35,22 +35,12 @@ int main() {
 
     PWM_init();
 
-    int bias[2];  // X is index 0, Y is index 1
-    bias[0] = 0;
-    bias[1] = 0;
+    int8_t bias[2] = {0,0};  // X is index 0, Y is index 1
+    int8_t position[2] = {0,0};
+    uint8_t buttons[2] = {0,0};
+    uint8_t slider[2] = {0,0};
+
     calibrate_joystick_bias(bias);
-
-    int position[2];
-    position[0] = 0;
-    position[1] = 0;
-
-    int buttons[2];
-    buttons[0] = 0;
-    buttons[1] = 0;
-
-    int slider[2];
-    slider[0] = 0;
-    slider[1] = 0;
 
     oled_init();
 
@@ -83,7 +73,6 @@ int main() {
 
     while (1) {
 
-        _delay_ms(500);
         char rec_data[9] = "";
 
         can_msg receive_message = {.id = 1, .data = &rec_data , .len = 8};
@@ -91,11 +80,11 @@ int main() {
         while (interrupt_flag == 1){
             
             uint8_t int_val = mcp_read_interrupt();
-            printf("Value interrupt: %d\r\n", int_val);
+            // printf("Value interrupt: %d\r\n", int_val);
             switch(int_val){
 
                 case INT_TX0:
-                    printf("interrupt on TX0\r\n");
+                    // printf("interrupt on TX0\r\n");
                     mcp_clear_interrupt_bit(MCP_TX0IF);
                     break;
 
@@ -112,7 +101,7 @@ int main() {
                 case INT_RX0:
                     printf("interrupt on RX0\r\n");
                     can_recieve_msg(&receive_message, 0);
-                    printf("Received message: %s \r\n", receive_message.data);
+                    // printf("Received message: x %d y %d \r\n", receive_message.data[0], receive_message.data[1]);
                     mcp_clear_interrupt_bit(MCP_RX0IF);
                     break;
 
@@ -125,6 +114,7 @@ int main() {
 
                 default:
                     printf("ERROR: Undefined interrupt\r\n");
+                    mcp_bit_modify(MCP_CANINTF, 0xff, 0);
                     break;
             }
 
@@ -136,26 +126,24 @@ int main() {
         // printf("mcp register TXB0D0: %c\n\r", mcp_read(0b00110110));
         // printf("mcp status-register : %c\n\r", mcp_read_status());
         
-        char *str = "abcdefgh";
+        //char *str[8] = "";
 
-        can_msg message = {.id = 1, .data = str, .len = 8};
+        //can_msg message = {.id = 1, .data = str, .len = 7};
 
-        can_send_msg(message);
-        _delay_ms(100);
+        //can_send_msg(message);
+        calculate_x_y(position, bias);
 
-        
-
-        // printf("Y: %d \r\n", read_adc_channel(0));
-        // printf("X: %d \r\n", read_adc_channel(1));
-        // calculate_x_y(position, bias);
+        send_joystick_x_y(&position);
+        //printf("Sending message: %s\r\n", message.data);
+                
         //read_touch_buttons(buttons);
         //printf("\r\nButtons: L: %d,   R: %d", buttons[0], buttons[1]);
         // printf("Bias -  X: %d, Y: %d", bias[0], bias[1]);
-        // printf("X: %d, Y: %d \r\n", position[0], position[1]);
+        printf("MAIN X: %d, Y: %d \r\n", position[0], position[1]);
         // printf("joystick direction : %d \r\n", calculate_direction(bias));
         // printf("Slider_left: %d \r\n", read_adc_channel(2));
         // printf("Slider_right: %d \r\n", read_adc_channel(3));
-        //_delay_ms(500);
+        _delay_ms(10);
     }
 
     return 0;
