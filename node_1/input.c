@@ -112,7 +112,9 @@ void interrupt_init(){
 }
 
 ISR(INT0_vect){
-    printf("interrupt 0 triggered\r\n");
+    can_msg message = {.id = 42, .data = 0, .len = 1};
+    can_send_msg(message);
+    printf("interrupt from right button\r\n");
 }
 
 
