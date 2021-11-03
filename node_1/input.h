@@ -12,6 +12,8 @@
 #include "constants.h"
 #include "bit_operations.h"
 
+volatile int int0_flag;
+
 typedef enum { LEFT, RIGHT, UP, DOWN, NEUTRAL, ANALOG_PRESS } INPUT;
 
 

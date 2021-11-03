@@ -42,6 +42,8 @@ int main() {
 
     calibrate_joystick_bias(bias);
 
+    int0_flag = 0;
+
     oled_init();
 
     oled_reset();
@@ -129,13 +131,20 @@ int main() {
         //char *str[8] = "";
 
         //can_msg message = {.id = 1, .data = str, .len = 7};
+        if (int0_flag){
+            can_msg button_message = {.id = 42, .data = &position, .len = 2};
+            can_send_msg(button_message);
+            printf("sending msg \r\n");
+            int0_flag = 0;
+        }
+           
 
         //can_send_msg(message);
         calculate_x_y(position, bias);
 
         send_joystick_x_y(&position);
         //printf("Sending message: %s\r\n", message.data);
-                
+             
         //read_touch_buttons(buttons);
         //printf("\r\nButtons: L: %d,   R: %d", buttons[0], buttons[1]);
         // printf("Bias -  X: %d, Y: %d", bias[0], bias[1]);
