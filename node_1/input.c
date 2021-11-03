@@ -112,7 +112,8 @@ void interrupt_init(){
 }
 
 ISR(INT0_vect){
-    printf("interrupt 0 triggered\r\n");
+    int0_flag = 1;
+    printf("interrupt from right button\r\n");
 }
 
 

@@ -26,12 +26,13 @@ void adc_init(){
 }
 
 void adc_read(){
-	// start adc
+	// start reading adc
 	ADC->ADC_CR |= ADC_CR_START;
 }
 
 
 void ADC_Handler(void){
 	analog_value = ADC->ADC_CDR[0];
-	printf("Analog value: %d\r\n", analog_value);
+	//printf("Analog value: %d\r\n", analog_value);
+	//NVIC_ClearPendingIRQ(ID_ADC);
 }
