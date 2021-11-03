@@ -42,10 +42,7 @@ int main(void)
 	can_default_init();
 	
 	printf("System initialized.\n\r");
-	
-	//enable peripheral clock 11
-	PMC->PMC_PCER0 = PMC_PCER0_PID11;
-	//Turn on the LEDs on the shield
+	PMC->PMC_PCER0 |= PMC_PCER0_PID11;
 	PIOA->PIO_PER = (PIO_PA19 | PIO_PA20 | PIO_PA14);
 	PIOA->PIO_OER = (PIO_PA19 | PIO_PA20 | PIO_PA14);
 	
