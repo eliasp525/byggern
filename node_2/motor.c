@@ -2,6 +2,7 @@
 #include "motor.h"
 
 void motor_init(){
+	dac_init();
     PMC->PMC_PCER0 |= PMC_PCER0_PID12; // IO controller B
     PMC->PMC_PCER0 |= PMC_PCER0_PID14; // IO controller D
 
@@ -14,6 +15,6 @@ void motor_init(){
     PIOD->PIO_SODR = (MOTOR_DIR_PIN | MOTOR_EN_PIN); // set motor direction and enabling motor
 }
 
-void set_motor_output(){
-    
+void set_motor_output(uint32_t value){
+    dac_convert(value);
 }

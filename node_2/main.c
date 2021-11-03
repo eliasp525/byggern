@@ -17,6 +17,7 @@
 #include "sam.h"
 #include "rttimer.h"
 #include "pid_controller.h"
+#include "motor.h"
 
 
 
@@ -40,6 +41,9 @@ int main(void)
 	pid_init(100);
 	rtt_init();
 	can_default_init();
+	motor_init();
+	// value for motor
+	uint32_t motor_output = 0;
 	
 	printf("System initialized.\n\r");
 	PMC->PMC_PCER0 |= PMC_PCER0_PID11;
@@ -67,12 +71,18 @@ int main(void)
 		adc_read();
 		
 		if (msg_rec_flag == 1){
-			if(message.id == 69){
+			if (message.id == 42){
+				printf("hitting the ball", 0);
+				//do stuff
+			}
+			
+			else if(message.id == 69){
 				//printf("x_pos: %d, y_pos %d\r\n", (int8_t)message.data[0], (int8_t)message.data[1]);
 				pwm_servo_upd_duty_cycle((int8_t)message.data[0]);
 				pid_ref = (int8_t)message.data[1];
 				msg_rec_flag = 0;
 			}
+			
 		}
 		if (analog_value < 30 && !score_flag && RTT_FLAG){
 			RTT_FLAG = 0;
@@ -84,5 +94,11 @@ int main(void)
 		else if (analog_value > 300 && score_flag && RTT_FLAG){
 			score_flag = 0;
 		}
-    }
+    motor_output++;
+	if (motor_output >= 0xFFFFFFFF){
+		motor_output = 0;
+	}
+	
+	}
+	
 }
