@@ -112,8 +112,7 @@ void interrupt_init(){
 }
 
 ISR(INT0_vect){
-    can_msg message = {.id = 42, .data = 0, .len = 1};
-    can_send_msg(message);
+    int0_flag = 1;
     printf("interrupt from right button\r\n");
 }
 
