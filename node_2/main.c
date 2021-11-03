@@ -12,7 +12,8 @@
 #include "printf-stdarg.h"
 #include "can_controller.h"
 #include "can_interrupt.h"
-
+#include "pwm_servo.h"
+#include "adc.h"
 #include "sam.h"
 
 
@@ -36,14 +37,20 @@ int main(void)
 	PIOA->PIO_SODR = PIO_PA20;
 	//PIOA->PIO_SODR = PIO_PA14;
 	
+	pwm_servo_init();
 	
+	pwm_servo_upd_duty_cycle(100);
+	
+	adc_init();
 	//char rec_data[8] = "";
 	//CAN_MESSAGE rec_msg = {.data_length = 8, .id = 1, .data = &rec_data};
     while (1) 
     {
 		if(message.id == 69){
-			printf("x_pos: %d, y_pos %d\r\n", (int8_t)message.data[0], (int8_t)message.data[1]);
+			// printf("x_pos: %d, y_pos %d\r\n", (int8_t)message.data[0], (int8_t)message.data[1]);
+			// pwm_servo_upd_duty_cycle((int8_t)message.data[0]);
 		}
+		adc_read();
 		
     }
 }
