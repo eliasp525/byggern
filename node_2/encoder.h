@@ -3,7 +3,6 @@
 #define ENCODER_H
 
 #include "sam.h"
-#include <util/delay.h>
 
 // PIN-definitions
 #define ENCODER_OE PIO_PD0 // active low Output Enable of encoder data
@@ -19,8 +18,10 @@
 #define ENCODER_DO6 PIO_PC7
 #define ENCODER_DO7 PIO_PC8
 
-#define ENCODER_DATA_Msk 0x1FE; // To read only PC1-PC8 for encoder data  
+#define ENCODER_DATA_Msk 0x1fe // To read only PC1-PC8 for encoder data  
 
 void encoder_init();
-void encoder_read(uint32_t encoder_counter);
+void encoder_read(uint32_t *encoder_counter);
 void _delay_us(uint32_t time_us);
+
+#endif

@@ -18,6 +18,7 @@
 #include "rttimer.h"
 #include "pid_controller.h"
 #include "motor.h"
+#include "encoder.h"
 
 
 
@@ -42,6 +43,11 @@ int main(void)
 	rtt_init();
 	can_default_init();
 	motor_init();
+	encoder_init();
+	
+	//encoder value
+	uint32_t encoder_value = 0;
+	
 	// value for motor
 	uint32_t motor_output = 0x000FFFFF;
 	set_motor_output(motor_output);
@@ -73,7 +79,7 @@ int main(void)
 		
 		if (msg_rec_flag == 1){
 			if (message.id == 42){
-				printf("hitting the ball", 0);
+				printf("hitting the ball");
 				//do stuff
 			}
 			
@@ -95,6 +101,8 @@ int main(void)
 		else if (analog_value > 300 && score_flag && RTT_FLAG){
 			score_flag = 0;
 		}
+	//encoder_read(&encoder_value);
+	//printf("Encoder value: %x \r\n", encoder_value);
     //motor_output++;
 	//if (motor_output >= 0xFFFFFFFF){
 		//motor_output = 0;
