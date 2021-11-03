@@ -69,9 +69,9 @@ int main(void)
     {
 		adc_read();
 		
-		if (msg_rec_flag == 0){
+		if (msg_rec_flag == 1){
 			if(message.id == 69){
-				printf("x_pos: %d, y_pos %d\r\n", (int8_t)message.data[0], (int8_t)message.data[1]);
+				//printf("x_pos: %d, y_pos %d\r\n", (int8_t)message.data[0], (int8_t)message.data[1]);
 				pwm_servo_upd_duty_cycle((int8_t)message.data[0]);
 				pid_ref = (int8_t)message.data[1];
 				msg_rec_flag = 0;
