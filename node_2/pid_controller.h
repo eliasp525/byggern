@@ -10,10 +10,11 @@
 
 #include "stdint.h"
 
-uint32_t sampling_time;
+uint32_t sample_frequency;
 
 uint32_t sum_of_error;
 uint32_t last_error; // e[n-1]
+int8_t pid_ref;
 
 void pid_init(uint32_t smpl_time);
 

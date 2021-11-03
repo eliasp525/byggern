@@ -34,4 +34,5 @@ void adc_read(){
 void ADC_Handler(void){
 	analog_value = ADC->ADC_CDR[0];
 	//printf("Analog value: %d\r\n", analog_value);
+	//NVIC_ClearPendingIRQ(ID_ADC);
 }

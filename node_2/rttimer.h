@@ -17,7 +17,5 @@ void rtt_alarm_start();
 
 void rtt_init();
 
-void rtt_check_alarm();
-
 
 #endif /* RTTIMER_H_ */
