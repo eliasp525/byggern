@@ -9,6 +9,9 @@ void dac_init(){
 
     // enable DAC1 in DACC_CHER
 	DACC->DACC_CHER |= DACC_CHER_CH1;
+	
+	// select channel 1
+	DACC->DACC_MR |= (DACC_MR_USER_SEL_CHANNEL1 | DACC_MR_REFRESH(1));
 }
 
 

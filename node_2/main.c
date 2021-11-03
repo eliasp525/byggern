@@ -43,7 +43,8 @@ int main(void)
 	can_default_init();
 	motor_init();
 	// value for motor
-	uint32_t motor_output = 0;
+	uint32_t motor_output = 0x000FFFFF;
+	set_motor_output(motor_output);
 	
 	printf("System initialized.\n\r");
 	PMC->PMC_PCER0 |= PMC_PCER0_PID11;
@@ -94,10 +95,10 @@ int main(void)
 		else if (analog_value > 300 && score_flag && RTT_FLAG){
 			score_flag = 0;
 		}
-    motor_output++;
-	if (motor_output >= 0xFFFFFFFF){
-		motor_output = 0;
-	}
+    //motor_output++;
+	//if (motor_output >= 0xFFFFFFFF){
+		//motor_output = 0;
+	//}
 	
 	}
 	
