@@ -45,31 +45,15 @@ int main() {
     int0_flag = 0;
 
     oled_init();
-
     oled_reset();
-    //led_goto_position(32, 1);
-
     oled_draw_star();
-
-    // printo("Hello world!", 0);
-    // oled_goto_position(0, 3);
-    // printo("Hello world!", 1);
 
     _delay_ms(1500);
 
     //oled_reset();
 
-    char* menu_elements[TOTAL_PAGES];
-    menu_elements[0] = "Option 1";
-    menu_elements[1] = "Option 2";
-    menu_elements[2] = "Option 3";
-    menu_elements[3] = "Exit";
-    menu_elements[4] = "";
-    menu_elements[5] = "";
-    menu_elements[6] = "";
-    menu_elements[7] = "===MAIN MENU====";
 
-    //run_menu(bias, menu_elements);
+    GameState game_state = run_menu(bias, main_menu);
 
     mcp_init();
     char rec_data[9] = "";

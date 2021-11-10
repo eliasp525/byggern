@@ -11,6 +11,18 @@
 
 #include <util/delay.h> //constants.h must be included before util/delay.h
 
+typedef struct{
+    char* menu_elements[TOTAL_PAGES];
+    uint8_t menu_size;
+    uint8_t pointer_start;
+} MenuType;
+
+typedef enum {PLAY_TIMED, PLAY_FREE, EXIT}GameState;
+
+MenuType main_menu;
+
+MenuType high_score_menu;
+
 void oled_init();
 
 void write_d(uint8_t data);
