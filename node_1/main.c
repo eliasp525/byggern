@@ -72,12 +72,10 @@ int main() {
     //run_menu(bias, menu_elements);
 
     mcp_init();
+    char rec_data[9] = "";
+    can_msg receive_message = {.id = 1, .data = &rec_data , .len = 8};
 
     while (1) {
-
-        char rec_data[9] = "";
-
-        can_msg receive_message = {.id = 1, .data = &rec_data , .len = 8};
 
         while (interrupt_flag == 1){
             
@@ -132,10 +130,11 @@ int main() {
 
         //can_msg message = {.id = 1, .data = str, .len = 7};
         if (int0_flag){
+            int0_flag = 0;
             can_msg button_message = {.id = 42, .data = &position, .len = 2};
             can_send_msg(button_message);
-            printf("sending msg \r\n");
-            int0_flag = 0;
+            //printf("sending msg \r\n");
+            _delay_ms(5);
         }
            
 
