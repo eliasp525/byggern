@@ -136,10 +136,14 @@ int main() {
             can_send_msg(button_message);
             //printf("sending msg \r\n");
             int0_flag = 0;
+            _delay_ms(10);
         }
            
 
         //can_send_msg(message);
+        calculate_x_y(position, bias);
+
+        send_joystick_x_y(&position);
         //printf("Sending message: %s\r\n", message.data);
              
         //read_touch_buttons(buttons);
@@ -150,10 +154,6 @@ int main() {
         // printf("Slider_left: %d \r\n", read_adc_channel(2));
         // printf("Slider_right: %d \r\n", read_adc_channel(3));
         _delay_ms(10);
-        
-        calculate_x_y(position, bias);
-
-        send_joystick_x_y(&position);
     }
 
     return 0;
