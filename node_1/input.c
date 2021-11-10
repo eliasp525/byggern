@@ -104,8 +104,8 @@ void interrupt_init(){
     sei(); //Global interrupt enable flag.
     GICR = (1 << INT0)|(1 << INT1); // INT0 and INT1 external interrupt enabled 
 
-    clear_bit(MCUCR, ISC01);
-    clear_bit(MCUCR, ISC00); // INT0 triggers on rising edge
+    set_bit(MCUCR, ISC01);
+    set_bit(MCUCR, ISC00); // INT0 triggers on rising edge
 
     set_bit(MCUCR, ISC11);
     clear_bit(MCUCR, ISC10); // INT1 triggers on falling edge
