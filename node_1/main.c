@@ -134,7 +134,7 @@ int main() {
         if (int0_flag){
             can_msg button_message = {.id = 42, .data = &position, .len = 2};
             can_send_msg(button_message);
-            printf("sending msg \r\n");
+            //printf("sending msg \r\n");
             int0_flag = 0;
         }
            
