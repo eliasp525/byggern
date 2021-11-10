@@ -13,8 +13,16 @@
 #define MOTOR_ANALOG_OUTPUT_PIN PIO_PB16 // 0-5 volt
 #define MOTOR_DIR 1
 
+#define JOYSTICK_MAX_VAL 100
+#define SATURATE_JOYSTICK_AT 30
+#define JOYSTICK_FULL_RANGE JOYSTICK_MAX_VAL*2
+
 void motor_init();
 
 void set_motor_output(uint32_t value);
+
+void set_motor_direction(int8_t dir);
+
+void set_motor_output_from_joystick_value(int8_t joystick_value);
 
 #endif

@@ -35,11 +35,65 @@ void _delay_us(uint32_t time_us){
     //Setup sysTick for delay
     SysTick->CTRL = SysTick->CTRL & !SysTick_CTRL_ENABLE_Msk; // Disables counter
 
-    SysTick-> LOAD = 84*time_us; //Should reload after time_us. 84 clock cycles per us with 84 Mhz.
+    SysTick->LOAD = 84*time_us; //Should reload after time_us. 84 clock cycles per us with 84 Mhz.
     SysTick->CTRL |= (1 << SysTick_CTRL_CLKSOURCE_Pos);
 
     SysTick->CTRL |= (1 << SysTick_CTRL_ENABLE_Pos); // Enables counter to count down from value in SysTick->LOAD
     while(!(SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk)); // Wait until COUNTFLAG has been set.
 
     SysTick->CTRL = SysTick->CTRL & !(SysTick_CTRL_ENABLE_Msk | SysTick_CTRL_COUNTFLAG_Msk); // Disables counter and clears COUNTFLAG
+}
+
+void _delay_ms(uint32_t time_ms){
+	//Setup sysTick for delay
+	SysTick->CTRL = SysTick->CTRL & !SysTick_CTRL_ENABLE_Msk; // Disables counter
+
+	SysTick->LOAD = 84000*time_ms; //Should reload after time_ms. 84 clock cycles per us with 84 Mhz.
+	SysTick->CTRL |= (1 << SysTick_CTRL_CLKSOURCE_Pos);
+
+	SysTick->CTRL |= (1 << SysTick_CTRL_ENABLE_Pos); // Enables counter to count down from value in SysTick->LOAD
+	while(!(SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk)); // Wait until COUNTFLAG has been set.
+
+	SysTick->CTRL = SysTick->CTRL & !(SysTick_CTRL_ENABLE_Msk | SysTick_CTRL_COUNTFLAG_Msk); // Disables counter and clears COUNTFLAG
+	SysTick->LOAD = 0; //Try to set this to zero after each delay
+
+}
+
+int16_t get_encoder_value_when_stopped(){
+	int16_t encoder_value;
+	int16_t prev_encoder_value;
+	prev_encoder_value = -1;
+	encoder_read(&encoder_value);
+	printf("Encoder value before loop: %x\r\n", encoder_value);
+	
+	uint32_t count = 0;
+	while(encoder_value != prev_encoder_value){
+		if (count == 1000000){
+			prev_encoder_value = encoder_value;
+			encoder_read(&encoder_value);
+			printf("Encoder value in loop: %x\r\n", encoder_value);
+			count = 0;
+		}
+		count++;
+	}
+
+	set_motor_output_from_joystick_value(0);
+	return encoder_value;
+}
+
+int16_t get_leftmost_encoder_value(){
+	set_motor_output_from_joystick_value(100);
+	return get_encoder_value_when_stopped();
+}
+
+
+int16_t get_rightmost_encoder_value(){
+	set_motor_output_from_joystick_value(-100);
+	return get_encoder_value_when_stopped();
+}
+
+int16_t convert_encoder_to_joystick(int16_t encoder_value, int16_t leftmost_encoder_value, int16_t rightmost_encoder_value){
+	int32_t thousand_a = -((200*1000)/(leftmost_encoder_value-rightmost_encoder_value));
+	int32_t thousand_b = 100*1000-thousand_a*rightmost_encoder_value;
+	return (thousand_a*encoder_value + thousand_b)/1000;
 }

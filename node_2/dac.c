@@ -32,7 +32,7 @@ void dac_convert(uint32_t value){
 
 void DACC_Handler(){
 	DACC->DACC_ISR; //Read and clear status register
-	printf("Running DACC handler\r\n ");
+	// printf("Running DACC handler\r\n ");
 	//if(current_cdr_value < 1000){
 		//current_cdr_value += 10;
 	//}

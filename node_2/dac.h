@@ -5,7 +5,9 @@
 #include "stdint.h"
 #include "sam.h"
 
-uint32_t current_cdr_value;
+#define DAC_RESOLUTION 4096
+
+//uint32_t current_cdr_value;
 
 void dac_init();
 

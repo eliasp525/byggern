@@ -46,7 +46,7 @@ int main(void)
 	encoder_init();
 	
 	//encoder value
-	uint32_t encoder_value = 0;
+	int16_t encoder_value = 0;
 	
 	// value for motor
 	uint32_t motor_output = 0x000FFFFF;
@@ -60,6 +60,8 @@ int main(void)
 	PIOA->PIO_SODR = PIO_PA19;
 	PIOA->PIO_SODR = PIO_PA20;
 	PIOA->PIO_SODR = PIO_PA14;
+
+	
 	
 	
 	
@@ -69,9 +71,21 @@ int main(void)
 	int score_counter = 0;
 	int score_flag = 0;
 	
-	
 	rtt_alarm_start();
 	
+	// int32_t (*convert_encoder_to_joystick_value)(int32_t*) = get_encoder_to_joystick_conversion_function();
+	int16_t leftmost_encoder_value = get_leftmost_encoder_value();
+	printf("Got leftmost value: %d\r\n", leftmost_encoder_value);
+	int16_t rightmost_encoder_value = get_rightmost_encoder_value();
+	printf("Got rightmost value: %d\r\n", rightmost_encoder_value);
+	
+	
+	int32_t total_range = leftmost_encoder_value - rightmost_encoder_value;
+	if (total_range < 0){
+		total_range = leftmost_encoder_value + (ENCODER_MAX_VALUE - rightmost_encoder_value);
+	}
+	
+	printf("total range: %d\r\n", total_range);
 	
     while (1) 
     {
@@ -79,14 +93,18 @@ int main(void)
 		
 		if (msg_rec_flag == 1){
 			if (message.id == 42){
-				printf("hitting the ball");
-				//do stuff
+				PIOA->PIO_CODR = PIO_PA14;
+				_delay_ms(10);
+				PIOA->PIO_SODR = PIO_PA14;
+				printf("Hitting the ball!");
 			}
 			
 			else if(message.id == 69){
-				//printf("x_pos: %d, y_pos %d\r\n", (int8_t)message.data[0], (int8_t)message.data[1]);
-				pwm_servo_upd_duty_cycle((int8_t)message.data[0]);
-				pid_ref = (int8_t)message.data[1];
+				printf("x_pos: %d, y_pos %d\r\n", (int8_t)message.data[0], (int8_t)message.data[1]);
+				pwm_servo_upd_duty_cycle((int8_t)message.data[1]);
+				pid_ref = (int8_t)message.data[0];
+				int16_t pid_measurement = convert_encoder_to_joystick(encoder_value, leftmost_encoder_value, rightmost_encoder_value);
+				set_motor_output_from_joystick_value(get_updated_input(pid_measurement-pid_ref));
 				msg_rec_flag = 0;
 			}
 			
@@ -101,9 +119,11 @@ int main(void)
 		else if (analog_value > 300 && score_flag && RTT_FLAG){
 			score_flag = 0;
 		}
-	//encoder_read(&encoder_value);
-	//printf("Encoder value: %x \r\n", encoder_value);
-    //motor_output++;
+	encoder_read(&encoder_value);
+	// printf("leftmost: %d, rightmost: %d\r\n", leftmost_encoder_value, rightmost_encoder_value);
+	printf("Joystic value: %d\r\n", convert_encoder_to_joystick(encoder_value, leftmost_encoder_value, rightmost_encoder_value));
+	printf("Encoder value: %d, %x \r\n", (int16_t)encoder_value, encoder_value);
+    // motor_output++;
 	//if (motor_output >= 0xFFFFFFFF){
 		//motor_output = 0;
 	//}

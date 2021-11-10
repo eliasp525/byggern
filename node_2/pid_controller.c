@@ -8,8 +8,10 @@ void pid_init(uint32_t frequency){
 }
 
 // e[n] - e[n-1]
-uint32_t get_updated_input(uint32_t err){
+int16_t get_updated_input(int16_t err){
+	printf("Error PID: %d\r\n", err);
     sum_of_error += err;
-    uint32_t input = K_PROPORTIONAL*err + K_INTEGRAL*sum_of_error/sample_frequency + sample_frequency*K_DERIVATIVE*(err-last_error);
-    return input;
+    int16_t input = K_PROPORTIONAL*err + K_INTEGRAL*sum_of_error/sample_frequency + sample_frequency*K_DERIVATIVE*(err-last_error);
+    printf("Input: %d\r\n", input);
+	return input;
 }

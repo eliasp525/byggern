@@ -3,6 +3,10 @@
 #define ENCODER_H
 
 #include "sam.h"
+#include "motor.h"
+
+#define ENCODER_MAX_VALUE 0x1FFFF
+#define CUT_RANGE_EDGES 500
 
 // PIN-definitions
 #define ENCODER_OE PIO_PD0 // active low Output Enable of encoder data
@@ -23,5 +27,10 @@
 void encoder_init();
 void encoder_read(uint32_t *encoder_counter);
 void _delay_us(uint32_t time_us);
+void _delay_ms(uint32_t time_ms);
+
+int16_t get_rightmost_encoder_value();
+int16_t get_leftmost_encoder_value();
+int16_t convert_encoder_to_joystick(int16_t encoder_value, int16_t leftmost_encoder_value, int16_t rightmost_encoder_value);
 
 #endif
