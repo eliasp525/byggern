@@ -39,7 +39,7 @@ void oled_clear_page(uint8_t page) {
 
 void oled_print(char letter, uint8_t invert) {
     if (letter < 32 || letter > 126) {
-        printf('ERROR: unsupported letter');
+        printf("ERROR: unsupported letter");
         return;
     }
     
@@ -131,59 +131,91 @@ void refresh_menu(char* menu_elements[], uint8_t current_option){
     }
 }
 
-void run_menu(int* bias, char* menu_elements[]){
-    uint8_t current_option = 0;
-    oled_reset(); //put reset here instead of in refresh_menu()
-    refresh_menu(menu_elements, current_option);
-    INPUT input = NEUTRAL;
-    while(1){
-        input = read_input(bias, input);
-        switch (input)
-        {        
-        case UP:
-            if (current_option == 0){
-                current_option = TOTAL_PAGES - 4;
-            }
-            current_option = current_option - 1;
-            break;
-        case DOWN:
-            current_option = (current_option + 1) % (TOTAL_PAGES - 4);
-            break;
-        case ANALOG_PRESS:
-            switch (current_option){
-                case 0:
+// void run_menu(int* bias, char* menu_elements[]){
+//     uint8_t current_option = 0;
+//     oled_reset(); //put reset here instead of in refresh_menu()
+//     refresh_menu(menu_elements, current_option);
+//     INPUT input = NEUTRAL;
+//     while(1){
+//         input = read_input(bias, input);
+//         switch (input)
+//         {        
+//         case UP:
+//             if (current_option == 0){
+//                 current_option = TOTAL_PAGES - 4;
+//             }
+//             current_option = current_option - 1;
+//             break;
+//         case DOWN:
+//             current_option = (current_option + 1) % (TOTAL_PAGES - 4);
+//             break;
+//         case ANALOG_PRESS:
+//             switch (current_option){
+//                 case 0:
 
-                case 1:
+//                 case 1:
 
-                case 2:
+//                 case 2:
 
-                case 3:
-                    oled_draw_star();
-                    _delay_ms(1000);
-                    run_menu(bias, high_score);
+//                 case 3:
+//                     oled_draw_star();
+//                     _delay_ms(1000);
+//                     run_menu(bias, high_score);
 
                 
-            }
+//             }
 
-            oled_draw_star();
-            _delay_ms(1500);
-            oled_reset();
-            break;
-        default:
-            break;
-        }
-        refresh_menu(menu_elements, current_option);
-        _delay_us(10);
-    }
-}
+//             oled_draw_star();
+//             _delay_ms(1500);
+//             oled_reset();
+//             break;
+//         default:
+//             break;
+//         }
+//         refresh_menu(menu_elements, current_option);
+//         _delay_us(10);
+//     }
+// }
 
-GameState run_menu(int* bias, MenuType menu){
+const char high_score_val[16] = "Olve: 999";
+
+const char * main_menu_elem[TOTAL_PAGES] = {
+    "Play Game",
+    "Free Play",
+    "High Score",
+    "Exit",
+    "",
+    "",
+    "",
+    "===MAIN MENU===="
+};
+
+
+const char* high_score[TOTAL_PAGES] = {
+    "",
+    high_score_val,
+    "",
+    "Back",
+    "",
+    "",
+    "",
+    "===HIGH SCORE==="
+};
+
+MenuType high_score_menu = {.menu_elements = high_score, .menu_size = 1, .pointer_start = 3};
+MenuType main_menu = {.menu_elements = main_menu_elem, .menu_size = 4, .pointer_start = 0};
+
+
+GameState run_menu(int8_t* bias, MenuType menu){
     uint8_t current_option = menu.pointer_start;
     oled_reset(); //put reset here instead of in refresh_menu()
-    refresh_menu(menu.menu_elements, current_option);
+    refresh_menu((*menu.menu_elements), current_option);
     INPUT input = NEUTRAL;
+
+    printf("bias0: %d\r\n", bias[0]);
     while(1){
         input = read_input(bias, input);
+        printf("Input menu: %d\r\n", input);
         switch (input)
         {        
         case UP:
@@ -193,21 +225,22 @@ GameState run_menu(int* bias, MenuType menu){
             current_option = current_option - 1;
             break;
         case DOWN:
-            current_option = (current_option + 1) % (menu.menu_size);
+            current_option = (current_option + 1) % menu.menu_size;
             break;
         case ANALOG_PRESS:
             switch (current_option){
                 case 0:
+                    oled_draw_star();
                     return PLAY_TIMED;
 
                 case 1:
-
+                    oled_draw_star();
                     return PLAY_FREE;
 
                 case 2:
                     oled_draw_star();
                     _delay_ms(1000);
-                    run_menu(bias, high_score_menu);
+                    run_menu(&bias, high_score_menu);
                     break;
 
                 case 3:
@@ -216,45 +249,18 @@ GameState run_menu(int* bias, MenuType menu){
 
                 
             }
-
-            oled_draw_star();
-            _delay_ms(1500);
-            oled_reset();
             break;
         default:
             break;
         }
-        refresh_menu(menu_elements, current_option);
-        _delay_us(10);
+        refresh_menu((*menu.menu_elements), current_option);
+        _delay_ms(1500);
     }
 
 }
 
-char* main_menu_elem[TOTAL_PAGES];
-main_menu_elem[0] = "Play Game";
-main_menu_elem[1] = "Free Play";
-main_menu_elem[2] = "High Score";
-main_menu_elem[3] = "Exit";
-main_menu_elem[4] = "";
-main_menu_elem[5] = "";
-main_menu_elem[6] = "";
-main_menu_elem[7] = "===MAIN MENU====";
 
 
-char* high_score[TOTAL_PAGES];
-high_score[0] = "";
-high_score[1] = high_score_val;
-high_score[2] = "";
-high_score[3] = "Back";
-high_score[4] = "";
-high_score[5] = "";
-high_score[6] = "";
-high_score[7] = "===HIGH SCORE===";
-
-MenuType high_score_menu = {.menu_elements = high_score, .menu_size = 1, .pointer_start = 0};
-MenuType main_menu = {.menu_elements = main_menu_elem, .menu_size = 4, .pointer_start = 0};
-
-char high_score_val[16] PROGMEM = "Olve: 999";
 
 
 // uint8_t offset_for_centered_text(char* text){
