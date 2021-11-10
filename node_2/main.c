@@ -50,7 +50,7 @@ int main(void)
 	
 	// value for motor
 	uint32_t motor_output = 0x000FFFFF;
-	set_motor_output(motor_output);
+	// set_motor_output(motor_output);
 	
 	printf("System initialized.\n\r");
 	PMC->PMC_PCER0 |= PMC_PCER0_PID11;
