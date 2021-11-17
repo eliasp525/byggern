@@ -13,7 +13,7 @@ const char * main_menu_elem[TOTAL_PAGES] = {
     "===MAIN MENU===="
 };
 
-char * const high_score[TOTAL_PAGES] = {
+char * high_score[TOTAL_PAGES][16] = {
     "OLV: 0",
     "ADR: 0",
     "ELI: 0",
@@ -35,30 +35,43 @@ const char * players[TOTAL_PAGES] = {
     "==PLAYER SELECT="
 };
 
-const uint8_t high_scores[3] EEMEM = {0, 0, 0};
+
+void init_highscore(){
+    uint8_t high_score1 = 2;
+    uint8_t high_score2 = 1;
+    uint8_t high_score3 = 2;
+
+    eeprom_update_byte((uint8_t*)HIGHSCORE_ADDRESS1, high_score1);
+    eeprom_update_byte((uint8_t*)HIGHSCORE_ADDRESS2, high_score1);
+    eeprom_update_byte((uint8_t*)HIGHSCORE_ADDRESS3, high_score1);
+}
+
+
 
 MenuType high_score_menu = {.elements = high_score, .min = 3, .max = 3};
-MenuType main_menu = {.elements = main_menu_elem, .min = 0, .max = 2};
+MenuType main_menu = {.elements = main_menu_elem, .min = 0, .max = 3};
 MenuType player_menu = {.elements = players, .min = 0, .max = 2};
 
-GameState menu(uint8_t* player){
+GameState menu(int8_t* bias, uint8_t* player){
+    
+    //make_highscore_menu();
+
     uint8_t state = 3;
         while(1){
         switch (state){
             case 0:
-                player = run_menu(bias, players);
+                player = run_menu(bias, player_menu);
                 return PLAY_TIMED;
                 break;
             case 1:
                 return PLAY_FREE;
                 break;
             case 2:
-                make_highscore_menu();
                 state = run_menu(bias, high_score_menu);
                 break;    
             case 3:
                 state = run_menu(bias, main_menu);
-                if state == 3{
+                if (state == 3){
                     return EXIT;
                 }
                 break;
@@ -115,31 +128,49 @@ void refresh_menu(char* menu_elements[], uint8_t current_option){
 
 void make_highscore_menu(){
     
-    char places[3][5];
-    sprintf(places[0], "%d", eeprom_read_byte(&(high_scores[0])));
-    sprintf(places[1], "%d", eeprom_read_byte(&(high_scores[1])));
-    sprintf(places[2], "%d", eeprom_read_byte(&(high_scores[2])));
-    char * high_score_place[3] = {"OLV: ", "ADR: ", "ELI: "};
-    strcat(high_score_place[0],places[0]);
-    strcat(high_score_place[1],places[1]);
-    strcat(high_score_place[2],places[2]);
-
-    high_score_menu.elements[0] = high_score_place[0];
-    high_score_menu.elements[1] = high_score_place[1];
-    high_score_menu.elements[2] = high_score_place[2];
+    //char places[3][5];
+    uint8_t val1 = eeprom_read_byte((uint8_t*) HIGHSCORE_ADDRESS1);
+    uint8_t val2 = eeprom_read_byte((uint8_t*) HIGHSCORE_ADDRESS2);
+    uint8_t val3 = eeprom_read_byte((uint8_t*) HIGHSCORE_ADDRESS3);
+    //sprintf(places[0], "%d", byte);
+    //printf("place: %s \r\n", places);
+    //sprintf(places[1], "%d", eeprom_read_byte(&(high_scores[1])));
+    //sprintf(places[2], "%d", eeprom_read_byte(&(high_scores[2])));
+    //char * high_score_place[3] = {"OLV: ", "ADR: ", "ELI: "};
+    char str1[16];
+    char str2[16];
+    char str3[16];
+    snprintf(str1, 16, "OLV: %d",val1);
+    snprintf(str2, 16, "ADR: %d",val2);
+    snprintf(str3, 16, "ELI: %d",val3);
+    //strcat(high_score_place,places);
+    //strcat(high_score_place[1],places[1]);
+    //strcat(high_score_place[2],places[2]);
+    //printf("high_score_place: %s \r\n", high_score_place);
+    //strcpy((*high_score_menu.elements[0]), high_score_place);
+    //snprintf(high_score_menu.elements[0], 16, "%s", high_score_place);
+    //high_score_menu.elements[0][16] = '\0';
+    //high_score_menu.elements[0] = high_score_place;
+    //high_score_menu.elements[1] = high_score_place[1];
+    //high_score_menu.elements[2] = high_score_place[2];
 }
 
 void update_high_score(uint8_t player, uint8_t score){
-    if (score > eeprom_read_byte(&(high_scores[player]))){
-        eeprom_write_byte(&(high_scores[player]), score);
+    if (player > 2 || player < 0){
+        printf("playervalue outside range, val: %d \r\n", player);
+        return;
     }
-    
+    uint8_t high_score = eeprom_read_byte((uint8_t*)(HIGHSCORE_BASEADRESS + player));
+    if (score > high_score){
+        eeprom_write_byte((uint8_t*)(HIGHSCORE_BASEADRESS + player), score);
+    }
+   
 }
 
 
 void update_score_screen(uint8_t score){
     oled_reset();
-    oled_goto_position(24,1);
+    oled_goto_position(32,1);
     char str[] = "Score: ";
     char scorestr[5];
     sprintf(scorestr, "%d", score);

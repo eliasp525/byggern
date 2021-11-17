@@ -2,8 +2,14 @@
 #define MENU_H
 
 #include <avr/eeprom.h>
+#include <string.h>
 #include "oled.h"
 #include "input.h"
+
+#define HIGHSCORE_BASEADRESS 0
+#define HIGHSCORE_ADDRESS1 0
+#define HIGHSCORE_ADDRESS2 1
+#define HIGHSCORE_ADDRESS3 2
 
 typedef struct{
     const char *elements[TOTAL_PAGES];
@@ -13,11 +19,7 @@ typedef struct{
 
 typedef enum {MENU, PLAY_TIMED, PLAY_FREE, EXIT}GameState;
 
-MenuType main_menu;
-MenuType high_score_menu;
-MenuType players;
-
-GameState menu(GameState game_state, uint8_t* player);
+GameState menu(int8_t* bias, uint8_t* player);
 
 uint8_t run_menu(int8_t* bias, MenuType menu);
 

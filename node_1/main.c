@@ -43,8 +43,8 @@ int main() {
     uint8_t score = 0;
     char rec_data[9] = "";
     can_msg receive_message = {.id = 1, .data = &rec_data , .len = 8};
-
-
+    
+    
     calibrate_joystick_bias(bias);
 
     int0_flag = 0;
@@ -54,6 +54,7 @@ int main() {
     oled_draw_star();
 
     mcp_init();
+    init_highscore();
     
     _delay_ms(1500);
 
@@ -62,8 +63,8 @@ int main() {
     GameState game_state = MENU;
 
     
-    while (game_state != EXIT)
-        game_state = menu(&player);
+    while (game_state != EXIT){
+        game_state = menu(bias, &player);
         update_score_screen(score);
 
         if (game_state == PLAY_TIMED){
@@ -154,7 +155,7 @@ int main() {
             //read_touch_buttons(buttons);
             //printf("\r\nButtons: L: %d,   R: %d", buttons[0], buttons[1]);
             // printf("Bias -  X: %d, Y: %d", bias[0], bias[1]);
-            printf("MAIN X: %d, Y: %d \r\n", position[0], position[1]);
+            //printf("MAIN X: %d, Y: %d \r\n", position[0], position[1]);
             // printf("joystick direction : %d \r\n", calculate_direction(bias));
             // printf("Slider_left: %d \r\n", read_adc_channel(2));
             // printf("Slider_right: %d \r\n", read_adc_channel(3));
@@ -165,8 +166,8 @@ int main() {
         }
     }
 
-    oled_draw_star();
-    _delay_ms(1500);
+    //oled_draw_star();
+    //_delay_ms(1500);
     
     return 0;
 }
