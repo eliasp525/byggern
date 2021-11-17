@@ -91,7 +91,7 @@ int main() {
                     can_recieve_msg(&receive_message, 0);
                     if (receive_message.id == 10){
                         score++;
-                        printf("score: %c\r\n", score);
+                        printf("score: %d\r\n", score);
                         update_score_screen(score);
                     }
                     printf("Received message: x %x id %x \r\n", receive_message.data[0], receive_message.id);
