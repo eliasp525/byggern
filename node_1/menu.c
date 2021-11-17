@@ -135,9 +135,10 @@ void update_high_score(uint8_t player, uint8_t score){
 
 
 void update_score_screen(uint8_t score){
+    oled_reset();
     oled_goto_position(24,1);
-    char* str[] = {"Score: "};
-    char scorestr[3];
+    char str[] = "Score: ";
+    char scorestr[5];
     sprintf(scorestr, "%d", score);
     strcat(str, scorestr);
     printo(str, 0);
