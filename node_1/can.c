@@ -20,12 +20,12 @@ void can_recieve_msg(can_msg* message, uint8_t buffer){
     case 0:
         start_address = MCP_RXB0D0;
         message->len  = mcp_read(MCP_RXB0DLC) & 0x0F; //Only read last four bits
-        message->id = mcp_read(MCP_RXB0SIDL) + (mcp_read(MCP_RXB0SIDH) << 8)
+        message->id = mcp_read(MCP_RXB0SIDL) + (mcp_read(MCP_RXB0SIDH) << 8);
         break;
     case 1:
         start_address = MCP_RXB1D0;
         message->len = mcp_read(MCP_RXB1DLC) & 0x0F; //Only read last four bits
-        message->id = mcp_read(MCP_RXB1SIDL) + (mcp_read(MCP_RXB1SIDH) << 8)
+        message->id = mcp_read(MCP_RXB1SIDL) + (mcp_read(MCP_RXB1SIDH) << 8);
         break;
     }
     mcp_read_buffer(message, start_address);

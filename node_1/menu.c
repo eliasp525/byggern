@@ -33,13 +33,13 @@ const char * players[TOTAL_PAGES] = {
     "",
     "",
     "==PLAYER SELECT="
-}
+};
 
-const uint8_t high_scores[] EEMEM = {0, 0, 0};
+const uint8_t high_scores[3] = {0, 0, 0};
 
 MenuType high_score_menu = {.elements = high_score, .min = 3, .max = 3};
 MenuType main_menu = {.elements = main_menu_elem, .min = 0, .max = 3};
-MenuType player_menu = {.elements = players, .min = 0, .max = 2}
+MenuType player_menu = {.elements = players, .min = 0, .max = 2};
 
 GameState run_menu(int8_t* bias, MenuType menu){
     uint8_t current_option = menu.min;
@@ -108,7 +108,7 @@ void refresh_menu(char* menu_elements[], uint8_t current_option){
     }
 }
 
-void player_select(){
+void player_select(uint8_t current_option){
     refresh_menu((*player_menu.elements), current_option);
 }
 
@@ -116,9 +116,9 @@ void player_select(){
 void make_highscore_menu(){
     
     char places[3][5];
-    sprintf(places[0], "%d", eeprom_read_byte(&(high_scores[0])););
-    sprintf(places[1], "%d", eeprom_read_byte(&(high_scores[1])););
-    sprintf(places[2], "%d", eeprom_read_byte(&(high_scores[2])););
+    sprintf(places[0], "%d", eeprom_read_byte(&(high_scores[0])));
+    sprintf(places[1], "%d", eeprom_read_byte(&(high_scores[1])));
+    sprintf(places[2], "%d", eeprom_read_byte(&(high_scores[2])));
     char * high_score_place[3] = {"OLV: ", "ADR: ", "ELI: "};
     strcat(high_score_place[0],places[0]);
     strcat(high_score_place[1],places[1]);
@@ -130,13 +130,13 @@ void make_highscore_menu(){
 }
 
 void update_high_score(uint8_t player, uint8_t score){
-    eeprom_write_byte(&(high_scores[player]), score)
+    eeprom_write_byte(&(high_scores[player]), score);
 }
 
 
 void update_score_screen(uint8_t score){
     oled_goto_position(24,1);
-    char* str[] = "Score: ";
+    char* str[] = {"Score: "};
     char scorestr[3];
     sprintf(scorestr, "%d", score);
     strcat(str, scorestr);
