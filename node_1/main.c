@@ -106,7 +106,7 @@ int main() {
                         printf("score: %c\r\n", score);
                         update_score_screen(score);
                     }
-                    printf("Received message: %x \r\n", receive_message.data[0]);
+                    printf("Received message: %x id: %d\r\n", receive_message.data[0], receive_message.id);
                     mcp_clear_interrupt_bit(MCP_RX1IF);
                     break;
 
