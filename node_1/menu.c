@@ -35,7 +35,7 @@ const char * players[TOTAL_PAGES] = {
     "==PLAYER SELECT="
 };
 
-const uint8_t high_scores[3] = {0, 0, 0};
+const uint8_t high_scores[3] EEMEM = {0, 0, 0};
 
 MenuType high_score_menu = {.elements = high_score, .min = 3, .max = 3};
 MenuType main_menu = {.elements = main_menu_elem, .min = 0, .max = 3};
@@ -50,7 +50,7 @@ GameState run_menu(int8_t* bias, MenuType menu){
     //printf("bias0: %d\r\n", bias[0]);
     while(1){
         input = read_input(bias, input);
-        //printf("Input menu: %d\r\n", input);
+        printf("Input menu: %d\r\n", input);
         switch (input)
         {        
         case UP:
@@ -67,11 +67,9 @@ GameState run_menu(int8_t* bias, MenuType menu){
         case ANALOG_PRESS:
             switch (current_option){
                 case 0:
-                    oled_draw_star();
                     return PLAY_TIMED;
 
                 case 1:
-                    oled_draw_star();
                     return PLAY_FREE;
 
                 case 2:
