@@ -36,12 +36,14 @@ void _delay_us(uint32_t time_us){
     SysTick->CTRL = SysTick->CTRL & !SysTick_CTRL_ENABLE_Msk; // Disables counter
 
     SysTick->LOAD = 84*time_us; //Should reload after time_us. 84 clock cycles per us with 84 Mhz.
+	SysTick->VAL = 0;
     SysTick->CTRL |= (1 << SysTick_CTRL_CLKSOURCE_Pos);
 
     SysTick->CTRL |= (1 << SysTick_CTRL_ENABLE_Pos); // Enables counter to count down from value in SysTick->LOAD
     while(!(SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk)); // Wait until COUNTFLAG has been set.
 
     SysTick->CTRL = SysTick->CTRL & !(SysTick_CTRL_ENABLE_Msk | SysTick_CTRL_COUNTFLAG_Msk); // Disables counter and clears COUNTFLAG
+	SysTick->LOAD = 0;
 }
 
 void _delay_ms(uint32_t time_ms){
@@ -49,6 +51,7 @@ void _delay_ms(uint32_t time_ms){
 	SysTick->CTRL = SysTick->CTRL & !SysTick_CTRL_ENABLE_Msk; // Disables counter
 
 	SysTick->LOAD = 84000*time_ms; //Should reload after time_ms. 84 clock cycles per us with 84 Mhz.
+	SysTick->VAL = 0;
 	SysTick->CTRL |= (1 << SysTick_CTRL_CLKSOURCE_Pos);
 
 	SysTick->CTRL |= (1 << SysTick_CTRL_ENABLE_Pos); // Enables counter to count down from value in SysTick->LOAD
@@ -64,17 +67,13 @@ int16_t get_encoder_value_when_stopped(){
 	int16_t prev_encoder_value;
 	prev_encoder_value = -1;
 	encoder_read(&encoder_value);
-	printf("Encoder value before loop: %x\r\n", encoder_value);
+	// printf("Encoder value before loop: %x\r\n", encoder_value);
 	
 	uint32_t count = 0;
 	while(encoder_value != prev_encoder_value){
-		if (count == 1000000){
-			prev_encoder_value = encoder_value;
-			encoder_read(&encoder_value);
-			printf("Encoder value in loop: %x\r\n", encoder_value);
-			count = 0;
-		}
-		count++;
+		_delay_ms(100);
+		prev_encoder_value = encoder_value;
+		encoder_read(&encoder_value);
 	}
 
 	set_motor_output_from_joystick_value(0);
@@ -82,13 +81,16 @@ int16_t get_encoder_value_when_stopped(){
 }
 
 int16_t get_leftmost_encoder_value(){
-	set_motor_output_from_joystick_value(100);
+	//printf("Getting leftmost encoder value\r\n");
+	set_motor_output_from_joystick_value(CALIBRATION_INPUT_TO_MOTORS);
 	return get_encoder_value_when_stopped();
 }
 
 
 int16_t get_rightmost_encoder_value(){
-	set_motor_output_from_joystick_value(-100);
+	// printf("Getting rightmost encoder value\r\n");
+	set_motor_output_from_joystick_value(-CALIBRATION_INPUT_TO_MOTORS);
+	
 	return get_encoder_value_when_stopped();
 }
 

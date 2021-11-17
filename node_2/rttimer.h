@@ -10,6 +10,7 @@
 #define RTTIMER_H_
 
 #include "sam.h"
+#include "pid_controller.h"
 
 volatile int RTT_FLAG;
 

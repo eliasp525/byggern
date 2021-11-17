@@ -30,17 +30,17 @@ void set_motor_direction(int8_t dir){
 }
 
 
-void set_motor_output_from_joystick_value(int8_t joystick_value){
+void set_motor_output_from_joystick_value(int16_t joystick_value){
 	set_motor_direction(joystick_value);
 	
 	if (abs(joystick_value) > 100){
 		joystick_value = 100;
 	}
 	
-	int32_t value_applied_saturation = (SATURATE_JOYSTICK_AT*abs(joystick_value))/JOYSTICK_MAX_VAL; // value_applied_saturation maps 0-JOYSTICK_MAX_VAL(=100) to 0-SATURATE_JOYSTICK_AT(=30)
-	int32_t motor_output =  (DAC_RESOLUTION/JOYSTICK_MAX_VAL)*value_applied_saturation;
+	int16_t value_applied_saturation = (SATURATE_JOYSTICK_AT*abs(joystick_value))/JOYSTICK_MAX_VAL; // value_applied_saturation maps 0-JOYSTICK_MAX_VAL(=100) to 0-SATURATE_JOYSTICK_AT(=30)
+	int16_t motor_output =  (DAC_RESOLUTION/JOYSTICK_MAX_VAL)*value_applied_saturation;
 	
-	//printf("Setting motor output to %d \r\n", motor_output);
+	// printf("Setting motor output to %d \r\n", motor_output);
 	
 	set_motor_output(motor_output);
 }

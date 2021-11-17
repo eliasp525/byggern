@@ -31,16 +31,9 @@ int main(void)
 	WDT->WDT_MR = WDT_MR_WDDIS;
 
 	configure_uart();
-	
-	
-	
-	
-	
-	
 	pwm_servo_init();
 	adc_init();
 	pid_init(100);
-	rtt_init();
 	can_default_init();
 	motor_init();
 	encoder_init();
@@ -71,9 +64,9 @@ int main(void)
 	int score_counter = 0;
 	int score_flag = 0;
 	
-	rtt_alarm_start();
+	//rtt_alarm_start();
 	
-	// int32_t (*convert_encoder_to_joystick_value)(int32_t*) = get_encoder_to_joystick_conversion_function();
+	printf("Starting encoder calibration\r\n ");
 	int16_t leftmost_encoder_value = get_leftmost_encoder_value();
 	printf("Got leftmost value: %d\r\n", leftmost_encoder_value);
 	int16_t rightmost_encoder_value = get_rightmost_encoder_value();
@@ -87,42 +80,64 @@ int main(void)
 	
 	printf("total range: %d\r\n", total_range);
 	
+	
+	
+	//set_motor_output_from_joystick_value(-100);
+	rtt_init();
     while (1) 
     {
 		adc_read();
 		
+		 //testing (safe to remove)
+		int8_t pid_ref_test = 0;
+		int16_t pid_measurement_test = convert_encoder_to_joystick(encoder_value, leftmost_encoder_value, rightmost_encoder_value);
+	
+		if(RTT_FLAG == 1){
+			set_motor_output_from_joystick_value(get_updated_input(pid_measurement_test-pid_ref_test));
+			RTT_FLAG = 0;
+		}
+					
+		 //end testing
+		
 		if (msg_rec_flag == 1){
 			if (message.id == 42){
+				message.id = 1;
 				PIOA->PIO_CODR = PIO_PA14;
-				_delay_ms(10);
+				_delay_ms(100);
 				PIOA->PIO_SODR = PIO_PA14;
 				printf("Hitting the ball!");
 			}
 			
 			else if(message.id == 69){
-				printf("x_pos: %d, y_pos %d\r\n", (int8_t)message.data[0], (int8_t)message.data[1]);
-				pwm_servo_upd_duty_cycle((int8_t)message.data[1]);
-				pid_ref = (int8_t)message.data[0];
-				int16_t pid_measurement = convert_encoder_to_joystick(encoder_value, leftmost_encoder_value, rightmost_encoder_value);
-				set_motor_output_from_joystick_value(get_updated_input(pid_measurement-pid_ref));
-				msg_rec_flag = 0;
+				//printf("x_pos: %d, y_pos %d\r\n", (int8_t)message.data[0], (int8_t)message.data[1]);
+				//pwm_servo_upd_duty_cycle((int8_t)message.data[1]);
+				//int8_t pid_ref = (int8_t)message.data[0];
+				//printf("pid_ref: %d\r\n", pid_ref);
+				//int16_t pid_measurement = convert_encoder_to_joystick(encoder_value, leftmost_encoder_value, rightmost_encoder_value);
+				//printf("pid_measurement: %d\r\n", pid_measurement);
+				//set_motor_output_from_joystick_value(get_updated_input(pid_measurement-pid_ref));
+				//msg_rec_flag = 0;
+				
+				
 			}
 			
 		}
-		if (analog_value < 30 && !score_flag && RTT_FLAG){
+		if (analog_value < 30 && !score_flag){  //&& RTT_FLAG){
 			RTT_FLAG = 0;
-			rtt_alarm_start();
+			//rtt_alarm_start();
 			score_counter++;
+			CAN_MESSAGE msg = {.id = 10, .data = score_counter, .data_length = 1};
+			can_send(&msg, 0);
 			printf("Score is: %d\r\n", score_counter);
 			score_flag = 1;
 		}
-		else if (analog_value > 300 && score_flag && RTT_FLAG){
+		else if (analog_value > 300 && score_flag){ // && RTT_FLAG){
 			score_flag = 0;
 		}
 	encoder_read(&encoder_value);
 	// printf("leftmost: %d, rightmost: %d\r\n", leftmost_encoder_value, rightmost_encoder_value);
-	printf("Joystic value: %d\r\n", convert_encoder_to_joystick(encoder_value, leftmost_encoder_value, rightmost_encoder_value));
-	printf("Encoder value: %d, %x \r\n", (int16_t)encoder_value, encoder_value);
+	// printf("Encoder measurement: %d\r\n", convert_encoder_to_joystick(encoder_value, leftmost_encoder_value, rightmost_encoder_value));
+	// printf("Encoder value: %d, %x \r\n", (int16_t)encoder_value, encoder_value);
     // motor_output++;
 	//if (motor_output >= 0xFFFFFFFF){
 		//motor_output = 0;
