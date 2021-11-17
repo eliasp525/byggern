@@ -202,12 +202,12 @@ const char* high_score[TOTAL_PAGES] = {
     "===HIGH SCORE==="
 };
 
-MenuType high_score_menu = {.menu_elements = high_score, .menu_size = 1, .pointer_start = 3};
-MenuType main_menu = {.menu_elements = main_menu_elem, .menu_size = 4, .pointer_start = 0};
+MenuType high_score_menu = {.menu_elements = high_score, .menu_min = 3, .menu_max = 3};
+MenuType main_menu = {.menu_elements = main_menu_elem, .menu_min = 0, .menu_max = 3};
 
 
 GameState run_menu(int8_t* bias, MenuType menu){
-    uint8_t current_option = menu.pointer_start;
+    uint8_t current_option = menu.min;
     oled_reset(); //put reset here instead of in refresh_menu()
     refresh_menu((*menu.menu_elements), current_option);
     INPUT input = NEUTRAL;
@@ -219,13 +219,15 @@ GameState run_menu(int8_t* bias, MenuType menu){
         switch (input)
         {        
         case UP:
-            if (current_option == 0){
-                current_option = menu.menu_size;
+            if (current_option != menu.menu_min){
+                current_option--;
             }
-            current_option = current_option - 1;
+            
             break;
         case DOWN:
-            current_option = (current_option + 1) % menu.menu_size;
+            if (current_option != menu.menu_max){
+                current_option++
+            }
             break;
         case ANALOG_PRESS:
             switch (current_option){

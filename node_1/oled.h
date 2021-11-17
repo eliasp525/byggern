@@ -13,8 +13,8 @@
 
 typedef struct{
     const char *menu_elements[TOTAL_PAGES];
-    uint8_t menu_size;
-    uint8_t pointer_start;
+    uint8_t menu_min;
+    uint8_t menu_max;
 } MenuType;
 
 typedef enum {PLAY_TIMED, PLAY_FREE, EXIT}GameState;
