@@ -13,7 +13,7 @@ const char * main_menu_elem[TOTAL_PAGES] = {
     "===MAIN MENU===="
 };
 
-char * high_score[TOTAL_PAGES][16] = {
+char * high_score[TOTAL_PAGES] = {
     "OLV: 0",
     "ADR: 0",
     "ELI: 0",
