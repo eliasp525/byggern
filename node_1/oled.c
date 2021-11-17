@@ -212,10 +212,10 @@ GameState run_menu(int8_t* bias, MenuType menu){
     refresh_menu((*menu.elements), current_option);
     INPUT input = NEUTRAL;
 
-    printf("bias0: %d\r\n", bias[0]);
+    //printf("bias0: %d\r\n", bias[0]);
     while(1){
         input = read_input(bias, input);
-        printf("Input menu: %d\r\n", input);
+        //printf("Input menu: %d\r\n", input);
         switch (input)
         {        
         case UP:
@@ -226,7 +226,7 @@ GameState run_menu(int8_t* bias, MenuType menu){
             break;
         case DOWN:
             if (current_option != menu.max){
-                current_option++
+                current_option++;
             }
             break;
         case ANALOG_PRESS:
@@ -256,7 +256,7 @@ GameState run_menu(int8_t* bias, MenuType menu){
             break;
         }
         refresh_menu((*menu.elements), current_option);
-        _delay_ms(1500);
+        _delay_ms(100);
     }
 
 }
