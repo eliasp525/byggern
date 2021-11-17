@@ -46,8 +46,11 @@ void send_joystick_x_y(int8_t *joystick_position){
 
 
 INPUT calculate_direction(int8_t *bias){
-    int8_t x = read_adc_channel(X_DIRECTION) - bias[0];
-    int8_t y = read_adc_channel(Y_DIRECTION) - bias[1];
+    int8_t x = read_adc_channel(X_DIRECTION);
+    int8_t y = read_adc_channel(Y_DIRECTION);
+
+    x = x - bias[0];
+    y = y - bias[1];
 
     //printf("Y: %d \r\n", y);
     //printf("X: %d \r\n", x);
@@ -56,7 +59,7 @@ INPUT calculate_direction(int8_t *bias){
 
     if (y > 78 && y <178){
         if (x > 178) {return RIGHT;}
-        else if (x < 78) {return LEFT;}
+        else if (x < 78) {return LEFT;} 
         else{return NEUTRAL;}
     }
 
