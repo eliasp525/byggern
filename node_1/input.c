@@ -1,7 +1,7 @@
 #include "input.h"
 
-#define I 7
-#define SREG 0x3F
+//#define I 7
+//#define SREG 0x3F
 
 void calibrate_joystick_bias(int8_t *bias){
     int x = 0;

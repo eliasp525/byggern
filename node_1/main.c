@@ -15,6 +15,7 @@
 #include "mcp2515.h"
 #include "can.h"
 #include "mcp2515_registers.h"
+#include "menu.h"
 
 #include <util/delay.h> //this must be after constants.h
 
@@ -39,6 +40,7 @@ int main() {
     int8_t position[2] = {0,0};
     uint8_t buttons[2] = {0,0};
     uint8_t slider[2] = {0,0};
+    uint8_t score = 0;
 
     calibrate_joystick_bias(bias);
 
@@ -54,6 +56,8 @@ int main() {
 
 
     GameState game_state = run_menu(bias, main_menu);
+
+    update_score_screen(score);
 
     mcp_init();
     char rec_data[9] = "";
@@ -85,7 +89,11 @@ int main() {
                 case INT_RX0:
                     printf("interrupt on RX0\r\n");
                     can_recieve_msg(&receive_message, 0);
-                    // printf("Received message: x %d y %d \r\n", receive_message.data[0], receive_message.data[1]);
+                    if (receive_message.id == 10){
+                        score++;
+                        update_score_screen(score);
+                    }
+                    printf("Received message: x %d id %x \r\n", receive_message.data[0], receive_message.id);
                     mcp_clear_interrupt_bit(MCP_RX0IF);
                     break;
 
@@ -104,6 +112,8 @@ int main() {
 
             if(mcp_read(MCP_CANINTF) == 0){interrupt_flag = 0;}
         }
+
+
 
         // mcp_write(0b00110110, 'h');
         // printf("mcp register TXB0D0: %d\n\r", mcp_read(0b00110110));

@@ -45,9 +45,4 @@ void oled_draw_star();
 
 void oled_goto_position(uint8_t column, uint8_t page);
 
-GameState run_menu(int8_t* bias, MenuType menu);
-
-// uint8_t menu_loop(char *menu_elements, int *position);
-
-// void menu_init(char *menu_elements, int *position);
 #endif
