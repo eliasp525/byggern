@@ -101,7 +101,12 @@ int main() {
                 case INT_RX1:
                     printf("interrupt on RX1\r\n");
                     can_recieve_msg(&receive_message, 1);
-                    printf("Received message: %s \r\n", receive_message.data);
+                    if (receive_message.id == 10){
+                        score++;
+                        printf("score: %c\r\n", score);
+                        update_score_screen(score);
+                    }
+                    printf("Received message: %x \r\n", receive_message.data[0]);
                     mcp_clear_interrupt_bit(MCP_RX1IF);
                     break;
 
