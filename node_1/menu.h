@@ -5,7 +5,21 @@
 #include "oled.h"
 #include "input.h"
 
-GameState run_menu(int8_t* bias, MenuType menu);
+typedef struct{
+    const char *elements[TOTAL_PAGES];
+    uint8_t min;
+    uint8_t max;
+} MenuType;
+
+typedef enum {MENU, PLAY_TIMED, PLAY_FREE, EXIT}GameState;
+
+MenuType main_menu;
+MenuType high_score_menu;
+MenuType players;
+
+GameState menu(GameState game_state, uint8_t* player);
+
+uint8_t run_menu(int8_t* bias, MenuType menu);
 
 void refresh_menu(char* menu_elements[], uint8_t current_option);
 

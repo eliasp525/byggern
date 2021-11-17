@@ -38,12 +38,37 @@ const char * players[TOTAL_PAGES] = {
 const uint8_t high_scores[3] EEMEM = {0, 0, 0};
 
 MenuType high_score_menu = {.elements = high_score, .min = 3, .max = 3};
-MenuType main_menu = {.elements = main_menu_elem, .min = 0, .max = 3};
+MenuType main_menu = {.elements = main_menu_elem, .min = 0, .max = 2};
 MenuType player_menu = {.elements = players, .min = 0, .max = 2};
 
-GameState run_menu(int8_t* bias, MenuType menu){
+GameState menu(uint8_t* player){
+    uint8_t state = 3;
+        while(1){
+        switch (state){
+            case 0:
+                player = run_menu(bias, players);
+                return PLAY_TIMED;
+                break;
+            case 1:
+                return PLAY_FREE;
+                break;
+            case 2:
+                make_highscore_menu();
+                state = run_menu(bias, high_score_menu);
+                break;    
+            case 3:
+                state = run_menu(bias, main_menu);
+                if state == 3{
+                    return EXIT;
+                }
+                break;
+        }
+    }
+}
+
+uint8_t run_menu(int8_t* bias, MenuType menu){
     uint8_t current_option = menu.min;
-    oled_reset(); //put reset here instead of in refresh_menu()
+    oled_reset(); 
     refresh_menu((*menu.elements), current_option);
     INPUT input = NEUTRAL;
 
@@ -65,32 +90,13 @@ GameState run_menu(int8_t* bias, MenuType menu){
             }
             break;
         case ANALOG_PRESS:
-            switch (current_option){
-                case 0:
-                    return PLAY_TIMED;
-
-                case 1:
-                    return PLAY_FREE;
-
-                case 2:
-                    oled_draw_star();
-                    _delay_ms(1000);
-                    run_menu(&bias, high_score_menu);
-                    break;
-
-                case 3:
-                    return EXIT;
-
-
-                
-            }
-            break;
-        default:
-            break;
+            return current_option;
         }
+
         refresh_menu((*menu.elements), current_option);
         _delay_ms(100);
     }
+
 
 }
 
@@ -104,10 +110,6 @@ void refresh_menu(char* menu_elements[], uint8_t current_option){
         }
         printo(menu_elements[i], invert);
     }
-}
-
-void player_select(uint8_t current_option){
-    refresh_menu((*player_menu.elements), current_option);
 }
 
 
@@ -128,7 +130,10 @@ void make_highscore_menu(){
 }
 
 void update_high_score(uint8_t player, uint8_t score){
-    eeprom_write_byte(&(high_scores[player]), score);
+    if (score > eeprom_read_byte(&(high_scores[player]))){
+        eeprom_write_byte(&(high_scores[player]), score);
+    }
+    
 }
 
 
