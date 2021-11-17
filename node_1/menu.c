@@ -116,9 +116,9 @@ void player_select(uint8_t current_option){
 void make_highscore_menu(){
     
     char places[3][5];
-    sprintf(places[0], "%d", eeprom_read_byte(&(high_scores[0])));
-    sprintf(places[1], "%d", eeprom_read_byte(&(high_scores[1])));
-    sprintf(places[2], "%d", eeprom_read_byte(&(high_scores[2])));
+    sprintf(places[0], "%c", eeprom_read_byte(&(high_scores[0])));
+    sprintf(places[1], "%c", eeprom_read_byte(&(high_scores[1])));
+    sprintf(places[2], "%c", eeprom_read_byte(&(high_scores[2])));
     char * high_score_place[3] = {"OLV: ", "ADR: ", "ELI: "};
     strcat(high_score_place[0],places[0]);
     strcat(high_score_place[1],places[1]);
