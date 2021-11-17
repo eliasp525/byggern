@@ -49,23 +49,24 @@ INPUT calculate_direction(int8_t *bias){
     int8_t x = read_adc_channel(X_DIRECTION);
     int8_t y = read_adc_channel(Y_DIRECTION);
 
-    x = x - bias[0];
-    y = y - bias[1];
+    //x = x - bias[0];
+    //y = y - bias[1];
 
     printf("Y: %d \r\n", y);
     printf("X: %d \r\n", x);
     printf("BIAS Y: %d \r\n", bias[1]);
     printf("BIAS X: %d \r\n", bias[0]);
 
-    if (y > 78 && y <178){
-        if (x > 178) {return RIGHT;}
-        else if (x < 78) {return LEFT;} 
+    if (y>78+bias[1] && y<178+bias[1]){
+        if (x>178+bias[0]) {return RIGHT;}
+        else if (x<78+bias[0]) {return LEFT;} 
         else{return NEUTRAL;}
     }
 
-    else if (x > 78 && x < 178){
-        if (y > 178) {return UP;}
-        else {return DOWN;}
+    else if (x>78+bias[0] && x<178+bias[0]){
+        if (y>178+bias[1]) {return UP;}
+        else if (y<78+bias[1]) {return DOWN;} 
+        else {return NEUTRAL;}
     }
 }
 

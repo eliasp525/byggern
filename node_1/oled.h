@@ -12,9 +12,9 @@
 #include <util/delay.h> //constants.h must be included before util/delay.h
 
 typedef struct{
-    const char *menu_elements[TOTAL_PAGES];
-    uint8_t menu_min;
-    uint8_t menu_max;
+    const char *elements[TOTAL_PAGES];
+    uint8_t min;
+    uint8_t max;
 } MenuType;
 
 typedef enum {PLAY_TIMED, PLAY_FREE, EXIT}GameState;
