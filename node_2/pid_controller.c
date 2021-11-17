@@ -4,6 +4,7 @@
 void pid_init(uint32_t frequency){
     sum_of_error = 0;
     last_error = 0;
+	integration_on = 1;
     sample_frequency = frequency;
 }
 
@@ -15,8 +16,9 @@ int16_t get_updated_input(int16_t err){
 	int16_t k_d = 75;
 	
 	int debug = 1;
-	
-    sum_of_error += err;
+	if (integration_on == 1){
+	    sum_of_error += err;
+	}
 	
 	int16_t proportional_part = (k_p*err)/10;
 	int16_t integral_part = ((k_i*sum_of_error)/10)/sample_frequency;
@@ -33,6 +35,14 @@ int16_t get_updated_input(int16_t err){
 	    printf("input:  %d\r\n", input);
 		printf(" \r\n ");
     }
+	
+	// anti integrator windup
+	if (integration_on == 1 && abs(input) > JOYSTICK_MAX_VAL){
+		integration_on = 0;
+	}
+	else if (integration_on == 0 && abs(input) < JOYSTICK_MAX_VAL){
+		integration_on = 1;
+	}
 	
 	last_error = err;
 	return input;

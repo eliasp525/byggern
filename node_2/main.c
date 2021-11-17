@@ -66,7 +66,9 @@ int main(void)
 	
 	//rtt_alarm_start();
 	
+	
 	printf("Starting encoder calibration\r\n ");
+	_delay_ms(500);
 	int16_t leftmost_encoder_value = get_leftmost_encoder_value();
 	printf("Got leftmost value: %d\r\n", leftmost_encoder_value);
 	int16_t rightmost_encoder_value = get_rightmost_encoder_value();
@@ -79,8 +81,8 @@ int main(void)
 	}
 	
 	printf("total range: %d\r\n", total_range);
-	
-	
+	int8_t pid_ref_test = 0;
+	int16_t pid_measurement_test = 0;
 	
 	//set_motor_output_from_joystick_value(-100);
 	rtt_init();
@@ -89,10 +91,9 @@ int main(void)
 		adc_read();
 		
 		 //testing (safe to remove)
-		int8_t pid_ref_test = 0;
-		int16_t pid_measurement_test = convert_encoder_to_joystick(encoder_value, leftmost_encoder_value, rightmost_encoder_value);
 	
 		if(RTT_FLAG == 1){
+			pid_measurement_test = convert_encoder_to_joystick(encoder_value, leftmost_encoder_value, rightmost_encoder_value);
 			set_motor_output_from_joystick_value(get_updated_input(pid_measurement_test-pid_ref_test));
 			RTT_FLAG = 0;
 		}
@@ -109,8 +110,10 @@ int main(void)
 			}
 			
 			else if(message.id == 69){
-				//printf("x_pos: %d, y_pos %d\r\n", (int8_t)message.data[0], (int8_t)message.data[1]);
-				//pwm_servo_upd_duty_cycle((int8_t)message.data[1]);
+				printf("x_pos: %d, y_pos %d\r\n", (int8_t)message.data[0], (int8_t)message.data[1]);
+				pwm_servo_upd_duty_cycle((int8_t)message.data[1]);
+				pid_ref_test = (int8_t)message.data[0];
+				
 				//int8_t pid_ref = (int8_t)message.data[0];
 				//printf("pid_ref: %d\r\n", pid_ref);
 				//int16_t pid_measurement = convert_encoder_to_joystick(encoder_value, leftmost_encoder_value, rightmost_encoder_value);
