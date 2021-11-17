@@ -12,7 +12,7 @@
 #include <util/delay.h> //constants.h must be included before util/delay.h
 
 typedef struct{
-    char* menu_elements[TOTAL_PAGES];
+    const char *menu_elements[TOTAL_PAGES];
     uint8_t menu_size;
     uint8_t pointer_start;
 } MenuType;
@@ -45,7 +45,7 @@ void oled_draw_star();
 
 void oled_goto_position(uint8_t column, uint8_t page);
 
-void run_menu(int* bias, char* menu_elements[]);
+GameState run_menu(int8_t* bias, MenuType menu);
 
 // uint8_t menu_loop(char *menu_elements, int *position);
 

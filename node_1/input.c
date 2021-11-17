@@ -52,10 +52,10 @@ INPUT calculate_direction(int8_t *bias){
     x = x - bias[0];
     y = y - bias[1];
 
-    //printf("Y: %d \r\n", y);
-    //printf("X: %d \r\n", x);
-    //printf("BIAS Y: %d \r\n", bias[1]);
-    //printf("BIAS X: %d \r\n", bias[0]);
+    printf("Y: %d \r\n", y);
+    printf("X: %d \r\n", x);
+    printf("BIAS Y: %d \r\n", bias[1]);
+    printf("BIAS X: %d \r\n", bias[0]);
 
     if (y > 78 && y <178){
         if (x > 178) {return RIGHT;}
@@ -72,19 +72,20 @@ INPUT calculate_direction(int8_t *bias){
 INPUT read_input(int8_t *bias, INPUT state){
     while(1){
         INPUT new_state = calculate_direction(bias);
+        printf("Input: %d \r\n", new_state);
         if (state != new_state){
             //printf("joystick direction : %d \r\n", new_state);
             return new_state;
         }
-        else if (!read_joystick_button()){
+        else if (read_joystick_button()){
             _delay_us(5);
-            while(!read_joystick_button()){
+            while(read_joystick_button()){
                 _delay_us(5);
             }
             
             return ANALOG_PRESS;
         }
-        _delay_us(5);
+        _delay_ms(1000);
     }
 }
 
