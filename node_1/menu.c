@@ -129,6 +129,10 @@ void refresh_menu(char* menu_elements[], uint8_t current_option){
 void make_highscore_menu(){
     
     //char places[3][5];
+    //free(high_score_menu.elements[0]);
+    //free(high_score_menu.elements[1]);
+    //free(high_score_menu.elements[2]);
+
     uint8_t val1 = eeprom_read_byte((uint8_t*) HIGHSCORE_ADDRESS1);
     uint8_t val2 = eeprom_read_byte((uint8_t*) HIGHSCORE_ADDRESS2);
     uint8_t val3 = eeprom_read_byte((uint8_t*) HIGHSCORE_ADDRESS3);
@@ -137,12 +141,17 @@ void make_highscore_menu(){
     //sprintf(places[1], "%d", eeprom_read_byte(&(high_scores[1])));
     //sprintf(places[2], "%d", eeprom_read_byte(&(high_scores[2])));
     //char * high_score_place[3] = {"OLV: ", "ADR: ", "ELI: "};
-    char str1[16];
-    char str2[16];
-    char str3[16];
-    snprintf(str1, 16, "OLV: %d",val1);
-    snprintf(str2, 16, "ADR: %d",val2);
-    snprintf(str3, 16, "ELI: %d",val3);
+    
+    // char* str1;
+    // char* str2;
+    // char* str3;
+    // str1 = (char*)malloc(17*sizeof(char));
+    // str1 = (char*)malloc(17*sizeof(char));
+    // str1 = (char*)malloc(17*sizeof(char));
+    
+    snprintf(make_highscore_menu.elements[0], 16, "OLV: %d",val1);
+    snprintf(make_highscore_menu.elements[1], 16, "ADR: %d",val2);
+    snprintf(make_highscore_menu.elements[2], 16, "ELI: %d",val3);
     //strcat(high_score_place,places);
     //strcat(high_score_place[1],places[1]);
     //strcat(high_score_place[2],places[2]);
