@@ -33,9 +33,4 @@ void oled_draw_star();
 
 void oled_goto_position(uint8_t column, uint8_t page);
 
-void run_menu(int* bias, char* menu_elements[]);
-
-// uint8_t menu_loop(char *menu_elements, int *position);
-
-// void menu_init(char *menu_elements, int *position);
 #endif

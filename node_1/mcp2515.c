@@ -17,9 +17,7 @@ void mcp_init(){
     // mcp_reset(); 
 
     uint8_t value = mcp_read(MCP_CANSTAT);
-    //printf("((value & SET_MODE_MASK) >> 5): %d\r\n", ((value & SET_MODE_MASK) >> 5));
     if (((value & SET_MODE_MASK) >> 5) != configuration){
-        //printf("((value & SET_MODE_MASK) >> 5): %d\r\n", ((value & SET_MODE_MASK) >> 5));
         printf("MCP2515 is not in config mode after reset!\n\r");
         return;
     }
@@ -27,29 +25,18 @@ void mcp_init(){
     
     //  configure CANINTE
     mcp_bit_modify(MCP_CANINTE, 0b11111111, 0b00011111);
-    //printf("CANINTE: %x\r\n", mcp_read(MCP_CANINTE));
 
     //configure bit timing in CNFx registers
     mcp_bit_modify(MCP_CNF1, 0xFF, 0x01); //Sets BRP to (1+1), SJW to 1
     mcp_bit_modify(MCP_CNF2, 0xFF, 0b10110001); //Sets PropSeg to (1+1), PS1 to (6+1), SAM to 0 (sample once), BTLMODE to 1 (set PS2 manually)
     mcp_bit_modify(MCP_CNF3, 0x07, 0x05); //Sets PS2 to (5+1)
 
-    // printf("CNF1: %x\r\n", mcp_read(MCP_CNF1));
-    // printf("CNF2: %x\r\n", mcp_read(MCP_CNF2));
-    // printf("CNF3: %x\r\n", mcp_read(MCP_CNF3));
-
-    //printf("Mode was: %x\r\n", mcp_read(MCP_CANCTRL))
   
     mcp_set_can_mode(MCP_CANCTRL, normal); // set mode
-    
-    //printf("Mode has been set to: %x\r\n", mcp_read(MCP_CANCTRL));
-
-    //printf("CANSTAT: %x\r\n", mcp_read(MCP_CANSTAT));
     
 }
 
 void mcp_set_can_mode(uint8_t canctrl, MODES mode){
-    //printf("trying to set mode: %d\r\n", mode);
     mcp_bit_modify(canctrl, SET_MODE_MASK, (mode << 5));
 }
 
@@ -101,11 +88,8 @@ void mcp_read_buffer(can_msg* message, char start_address){
     spi_master_transceive(READ_INSTRUCTION);
     spi_master_transceive(start_address);
     uint8_t len = message->len;
-    // printf("Length of message: %d\r\n", len);
     for(uint8_t i = 0; i < len+1; i++){
-        // printf("i: %d\r\n", i);
         message->data[i] = spi_master_transceive(0);
-        // printf("RX_DATA[%d]: %c\r\n", i, message->data[i]);
     }
     // message->data[len+1] = '\0';
     end_transmission();

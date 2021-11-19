@@ -1,7 +1,7 @@
 #include "input.h"
 
-#define I 7
-#define SREG 0x3F
+//#define I 7
+//#define SREG 0x3F
 
 void calibrate_joystick_bias(int8_t *bias){
     int x = 0;
@@ -37,51 +37,41 @@ void calculate_x_y(int8_t *joystick_position, int8_t *bias){
 }
 
 
-void send_joystick_x_y(int8_t *joystick_position){
-
-    can_msg message = {.id = 69, .data = joystick_position, .len = 2};
-    can_send_msg(message);
-
-}
-
-
 INPUT calculate_direction(int8_t *bias){
-    int8_t x = read_adc_channel(X_DIRECTION) - bias[0];
-    int8_t y = read_adc_channel(Y_DIRECTION) - bias[1];
+    uint8_t x = read_adc_channel(X_DIRECTION);
+    uint8_t y = read_adc_channel(Y_DIRECTION);
 
-    //printf("Y: %d \r\n", y);
-    //printf("X: %d \r\n", x);
-    //printf("BIAS Y: %d \r\n", bias[1]);
-    //printf("BIAS X: %d \r\n", bias[0]);
 
-    if (y > 78 && y <178){
-        if (x > 178) {return RIGHT;}
-        else if (x < 78) {return LEFT;}
+    if (y>78+bias[1] && y<178+bias[1]){
+        if (x>178+bias[0]) {return RIGHT;}
+        else if (x<78+bias[0]) {return LEFT;} 
         else{return NEUTRAL;}
     }
 
-    else if (x > 78 && x < 178){
-        if (y > 178) {return UP;}
-        else {return DOWN;}
+    else if (x>78+bias[0] && x<178+bias[0]){
+        if (y>178+bias[1]) {return UP;}
+        else if (y<78+bias[1]) {return DOWN;} 
+        else {return NEUTRAL;}
     }
 }
 
 INPUT read_input(int8_t *bias, INPUT state){
     while(1){
         INPUT new_state = calculate_direction(bias);
+        printf("Input: %d \r\n", new_state);
         if (state != new_state){
             //printf("joystick direction : %d \r\n", new_state);
             return new_state;
         }
-        else if (!read_joystick_button()){
+        else if (read_joystick_button()){
             _delay_us(5);
-            while(!read_joystick_button()){
+            while(read_joystick_button()){
                 _delay_us(5);
             }
             
             return ANALOG_PRESS;
         }
-        _delay_us(5);
+        _delay_ms(100);
     }
 }
 

@@ -1,5 +1,7 @@
 #include "oled.h"
 
+
+
 void write_d(uint8_t data) { EXTERNAL_MEMORY->OLED_DATA[0] = data; }
 
 void write_c(uint8_t byte) { EXTERNAL_MEMORY->OLED_COMMAND[0] = byte; }
@@ -37,7 +39,7 @@ void oled_clear_page(uint8_t page) {
 
 void oled_print(char letter, uint8_t invert) {
     if (letter < 32 || letter > 126) {
-        printf('ERROR: unsupported letter');
+        printf("ERROR: unsupported letter");
         return;
     }
     
@@ -115,50 +117,11 @@ void oled_draw_star(){
     }
 }
 
-// --------MENU---------
 
-void refresh_menu(char* menu_elements[], uint8_t current_option){
-    //oled_reset(); dont need to reset the screen when we are overwriting all pages anyways?
-    for (uint8_t i = 0; i < TOTAL_PAGES; i++){
-        oled_goto_position(0, i);
-        uint8_t invert = 0;
-        if (current_option == i){
-            invert = 1;
-        }
-        printo(menu_elements[i], invert);
-    }
-}
 
-void run_menu(int* bias, char* menu_elements[]){
-    uint8_t current_option = 0;
-    oled_reset(); //put reset here instead of in refresh_menu()
-    refresh_menu(menu_elements, current_option);
-    INPUT input = NEUTRAL;
-    while(1){
-        input = read_input(bias, input);
-        switch (input)
-        {        
-        case UP:
-            if (current_option == 0){
-                current_option = TOTAL_PAGES - 4;
-            }
-            current_option = current_option - 1;
-            break;
-        case DOWN:
-            current_option = (current_option + 1) % (TOTAL_PAGES - 4);
-            break;
-        case ANALOG_PRESS:
-            oled_draw_star();
-            _delay_ms(1500);
-            oled_reset();
-            break;
-        default:
-            break;
-        }
-        refresh_menu(menu_elements, current_option);
-        _delay_us(10);
-    }
-}
+
+
+
 
 // uint8_t offset_for_centered_text(char* text){
 //     if (strlen(text) > OLED_WIDTH)
