@@ -85,12 +85,12 @@ int main() {
                         break;
 
                     case INT_TX1:
-                        printf("interrupt on TX1\r\n");
+                        //printf("interrupt on TX1\r\n");
                         mcp_clear_interrupt_bit(MCP_TX1IF);
                         break;
 
                     case INT_TX2:
-                        printf("interrupt on TX2\r\n");
+                        //printf("interrupt on TX2\r\n");
                         mcp_clear_interrupt_bit(MCP_TX2IF);
                         break;
 
@@ -99,10 +99,8 @@ int main() {
                         can_recieve_msg(&receive_message, 0);
                         if (receive_message.id == 10){
                             score++;
-                            //printf("score: %d \r\n", score);
                             update_score_screen(score);
                         }
-                        //printf("Received message: x %x id %x \r\n", receive_message.data[0], receive_message.id);
                         mcp_clear_interrupt_bit(MCP_RX0IF);
                         break;
 
@@ -111,10 +109,8 @@ int main() {
                         can_recieve_msg(&receive_message, 1);
                         if (receive_message.id == 10){
                             score++;
-                            //printf("score: %c\r\n", score);
                             update_score_screen(score);
                         }
-                        //printf("Received message: %x id: %d\r\n", receive_message.data[0], receive_message.id);
                         mcp_clear_interrupt_bit(MCP_RX1IF);
                         break;
 
@@ -128,46 +124,25 @@ int main() {
             }
 
 
-
-            // mcp_write(0b00110110, 'h');
-            // printf("mcp register TXB0D0: %d\n\r", mcp_read(0b00110110));
-            // printf("mcp register TXB0D0: %c\n\r", mcp_read(0b00110110));
-            // printf("mcp status-register : %c\n\r", mcp_read_status());
-            
-            //char *str[8] = "";
-
-            //can_msg message = {.id = 1, .data = str, .len = 7};
             if (int0_flag){
                 int0_flag = 0;
                 can_msg button_message = {.id = 42, .data = &position, .len = 2};
                 can_send_msg(button_message);
-                //printf("sending msg \r\n");
+                printf("sending msg HIT BALL\r\n");
                 _delay_ms(5);
             }
             
 
-            //can_send_msg(message);
             calculate_x_y(position, bias);
-
             send_joystick_x_y(&position);
-            //printf("Sending message: %s\r\n", message.data);
-                
-            //read_touch_buttons(buttons);
-            //printf("\r\nButtons: L: %d,   R: %d", buttons[0], buttons[1]);
-            // printf("Bias -  X: %d, Y: %d", bias[0], bias[1]);
-            //printf("MAIN X: %d, Y: %d \r\n", position[0], position[1]);
-            // printf("joystick direction : %d \r\n", calculate_direction(bias));
-            // printf("Slider_left: %d \r\n", read_adc_channel(2));
-            // printf("Slider_right: %d \r\n", read_adc_channel(3));
-            _delay_ms(10);
+
+            _delay_ms(20);
         }
         if (game_state == PLAY_TIMED){
             update_high_score(player, score);
         }
     }
 
-    //oled_draw_star();
-    //_delay_ms(1500);
     
     return 0;
 }

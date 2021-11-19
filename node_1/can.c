@@ -30,3 +30,10 @@ void can_recieve_msg(can_msg* message, uint8_t buffer){
     }
     mcp_read_buffer(message, start_address);
 }
+
+void send_joystick_x_y(int8_t *joystick_position){
+
+    can_msg message = {.id = 69, .data = joystick_position, .len = 2};
+    can_send_msg(message);
+
+}
