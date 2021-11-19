@@ -14,6 +14,12 @@
 
 volatile int RTT_FLAG;
 
+uint32_t global_rtt_counter;
+uint8_t game_over;
+
+int ball_hit_active;
+uint32_t ball_hit_at;
+
 void rtt_alarm_start();
 
 void rtt_init();

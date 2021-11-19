@@ -17,3 +17,10 @@ void pwm_servo_upd_duty_cycle(int8_t duty_cycle);
 
 
 #endif
+
+
+#ifndef F_CPU
+
+#define F_CPU 84000000UL
+
+#endif

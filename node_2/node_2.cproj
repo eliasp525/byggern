@@ -228,6 +228,12 @@
     <Compile Include="rttimer.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="systick_timer.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="systick_timer.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="uart.c">
       <SubType>compile</SubType>
     </Compile>

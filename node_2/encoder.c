@@ -31,37 +31,6 @@ void encoder_read(uint32_t *encoder_counter){
     PIOD->PIO_SODR = ENCODER_OE; //Disable output from encoder.
 }
 
-void _delay_us(uint32_t time_us){
-    //Setup sysTick for delay
-    SysTick->CTRL = SysTick->CTRL & !SysTick_CTRL_ENABLE_Msk; // Disables counter
-
-    SysTick->LOAD = 84*time_us; //Should reload after time_us. 84 clock cycles per us with 84 Mhz.
-	SysTick->VAL = 0;
-    SysTick->CTRL |= (1 << SysTick_CTRL_CLKSOURCE_Pos);
-
-    SysTick->CTRL |= (1 << SysTick_CTRL_ENABLE_Pos); // Enables counter to count down from value in SysTick->LOAD
-    while(!(SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk)); // Wait until COUNTFLAG has been set.
-
-    SysTick->CTRL = SysTick->CTRL & !(SysTick_CTRL_ENABLE_Msk | SysTick_CTRL_COUNTFLAG_Msk); // Disables counter and clears COUNTFLAG
-	SysTick->LOAD = 0;
-}
-
-void _delay_ms(uint32_t time_ms){
-	//Setup sysTick for delay
-	SysTick->CTRL = SysTick->CTRL & !SysTick_CTRL_ENABLE_Msk; // Disables counter
-
-	SysTick->LOAD = 84000*time_ms; //Should reload after time_ms. 84 clock cycles per us with 84 Mhz.
-	SysTick->VAL = 0;
-	SysTick->CTRL |= (1 << SysTick_CTRL_CLKSOURCE_Pos);
-
-	SysTick->CTRL |= (1 << SysTick_CTRL_ENABLE_Pos); // Enables counter to count down from value in SysTick->LOAD
-	while(!(SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk)); // Wait until COUNTFLAG has been set.
-
-	SysTick->CTRL = SysTick->CTRL & !(SysTick_CTRL_ENABLE_Msk | SysTick_CTRL_COUNTFLAG_Msk); // Disables counter and clears COUNTFLAG
-	SysTick->LOAD = 0; //Try to set this to zero after each delay
-
-}
-
 int16_t get_encoder_value_when_stopped(){
 	int16_t encoder_value;
 	int16_t prev_encoder_value;
@@ -95,4 +64,19 @@ int16_t convert_encoder_to_joystick(int16_t encoder_value, int16_t leftmost_enco
 	int32_t thousand_a = -((200*1000)/(leftmost_encoder_value-rightmost_encoder_value));
 	int32_t thousand_b = 100*1000-thousand_a*rightmost_encoder_value;
 	return (thousand_a*encoder_value + thousand_b)/1000;
+}
+
+
+
+void calibrate_encoder(int16_t *leftmost_encoder_value, int16_t* rightmost_encoder_value){
+	printf("Starting encoder calibration\r\n ");
+	*leftmost_encoder_value = get_leftmost_encoder_value();
+	*rightmost_encoder_value = get_rightmost_encoder_value();
+	
+	int32_t total_range = *leftmost_encoder_value - *rightmost_encoder_value;
+	
+	if (abs(total_range) < 16000){
+		calibrate_encoder(leftmost_encoder_value, rightmost_encoder_value);
+	}
+	
 }
