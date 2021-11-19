@@ -81,16 +81,13 @@ int16_t get_encoder_value_when_stopped(){
 }
 
 int16_t get_leftmost_encoder_value(){
-	//printf("Getting leftmost encoder value\r\n");
 	set_motor_output_from_joystick_value(CALIBRATION_INPUT_TO_MOTORS);
 	return get_encoder_value_when_stopped();
 }
 
 
 int16_t get_rightmost_encoder_value(){
-	// printf("Getting rightmost encoder value\r\n");
 	set_motor_output_from_joystick_value(-CALIBRATION_INPUT_TO_MOTORS);
-	
 	return get_encoder_value_when_stopped();
 }
 

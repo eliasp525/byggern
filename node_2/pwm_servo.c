@@ -1,13 +1,5 @@
 #include "pwm_servo.h"
 
-// Importantregisters:
-// - PWM_CLK :PWMClockregister
-// - REG_PWM_CMRn :PWMChannelModeRegister
-// - REG_PWM_CPRDn :PWMChannelPeriodRegister
-// - REG_PWM_CDTYn :PWMChannelDutyCycleRegister
-// - PWM_ENA :PWMEnableRegister
-
-
 void pwm_servo_init(){
     PIOC->PIO_PDR = PIO_PC19; //Disable PIO control of pin PC19 (pin44), so that pwm can control it
     PIOC->PIO_ABSR |= PIO_PC19; //Assign peripheral B function

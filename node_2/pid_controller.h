@@ -3,13 +3,6 @@
 #ifndef PID_CONTROLLER_H
 #define PID_CONTROLLER_H
 
-#define K_PROPORTIONAL 4
-#define K_DERIVATIVE 0
-#define K_INTEGRAL 0
-
-// #define APPLICABLE_ENCODER_RANGE 0x4849 // the range of values the encoder will take when moving 'bumper' from left to right on rails
-
-
 #include "stdint.h"
 #include "motor.h"
 

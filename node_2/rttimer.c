@@ -1,7 +1,7 @@
 #include "rttimer.h"
 
 
-const uint32_t AT = 0; //Alarm triggered after AT + 1 counts
+const uint32_t AT = 0; // Alarm triggered after AT + 1 counts
 
 void rtt_init(){
 	RTT->RTT_MR = RTT_MR_RTTRST | RTT_MR_RTPRES (328) | RTT_MR_RTTINCIEN; //Slow clock is 32,768khz   // Rtt timer now si 

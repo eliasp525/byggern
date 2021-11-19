@@ -40,7 +40,5 @@ void set_motor_output_from_joystick_value(int16_t joystick_value){
 	int16_t value_applied_saturation = (SATURATE_JOYSTICK_AT*abs(joystick_value))/JOYSTICK_MAX_VAL; // value_applied_saturation maps 0-JOYSTICK_MAX_VAL(=100) to 0-SATURATE_JOYSTICK_AT(=30)
 	int16_t motor_output =  (DAC_RESOLUTION/JOYSTICK_MAX_VAL)*value_applied_saturation;
 	
-	// printf("Setting motor output to %d \r\n", motor_output);
-	
 	set_motor_output(motor_output);
 }

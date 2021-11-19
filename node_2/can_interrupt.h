@@ -15,10 +15,10 @@
 #include "can_controller.h"
 
 volatile CAN_MESSAGE message;
+
 int msg_rec_flag;
 
 void CAN0_Handler       ( void );
-
 
 
 #endif /* CAN_INTERRUPT_H_ */

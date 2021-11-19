@@ -10,12 +10,12 @@ void pid_init(uint32_t frequency){
 
 // e[n] - e[n-1]
 int16_t get_updated_input(int16_t err){
+	int debug = 0;
 	
-	int16_t k_p = 8;
-	int16_t k_i = 100;
-	int16_t k_d = 75;
+	int16_t k_p = 10;
+	int16_t k_i = 20;
+	int16_t k_d = 0;
 	
-	int debug = 1;
 	if (integration_on == 1){
 	    sum_of_error += err;
 	}
