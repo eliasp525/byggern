@@ -42,9 +42,9 @@ const char * players[TOTAL_PAGES] = {
 
 
 void init_highscore(){
-    uint8_t high_score1 = 2;
-    uint8_t high_score2 = 1;
-    uint8_t high_score3 = 3;
+    uint8_t high_score1 = 0;
+    uint8_t high_score2 = 0;
+    uint8_t high_score3 = 0;
 
     eeprom_update_byte((uint8_t*)HIGHSCORE_ADDRESS1, high_score1);
     eeprom_update_byte((uint8_t*)HIGHSCORE_ADDRESS2, high_score2);
@@ -65,7 +65,7 @@ GameState menu(int8_t* bias, uint8_t* player){
         while(1){
         switch (state){
             case 0:
-                player = run_menu(bias, player_menu);
+                (*player) = run_menu(bias, player_menu);
                 return PLAY_TIMED;
                 break;
             case 1:
@@ -91,7 +91,7 @@ uint8_t run_menu(int8_t* bias, MenuType menu){
     refresh_menu((*menu.elements), current_option);
     INPUT input = NEUTRAL;
 
-    //printf("bias0: %d\r\n", bias[0]);
+    printf("bias0: %d\r\n", bias[0]);
     while(1){
         input = read_input(bias, input);
         printf("Input menu: %d\r\n", input);
@@ -139,8 +139,8 @@ void make_highscore_menu(){
     uint8_t val3 = eeprom_read_byte((uint8_t*) HIGHSCORE_ADDRESS3);
     
     snprintf(high1, 17, "OLV: %d",val1);
-    snprintf(high2, 16, "ADR: %d",val2);
-    snprintf(high3, 16, "ELI: %d",val3);
+    snprintf(high2, 17, "ADR: %d",val2);
+    snprintf(high3, 17, "ELI: %d",val3);
 }
 
 void update_high_score(uint8_t player, uint8_t score){

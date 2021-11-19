@@ -42,6 +42,8 @@ INPUT calculate_direction(int8_t *bias){
     uint8_t y = read_adc_channel(Y_DIRECTION);
 
 
+    //printf("x: %d, y: %d \r\n", x, y);
+
     if (y>78+bias[1] && y<178+bias[1]){
         if (x>178+bias[0]) {return RIGHT;}
         else if (x<78+bias[0]) {return LEFT;} 
@@ -56,14 +58,16 @@ INPUT calculate_direction(int8_t *bias){
 }
 
 INPUT read_input(int8_t *bias, INPUT state){
+    //printf("Prior Input: %d \r\n", state);
     while(1){
         INPUT new_state = calculate_direction(bias);
-        printf("Input: %d \r\n", new_state);
+        //printf("Input: %d \r\n", new_state);
         if (state != new_state){
             //printf("joystick direction : %d \r\n", new_state);
             return new_state;
         }
         else if (read_joystick_button()){
+            //printf("button\r\n");
             _delay_us(5);
             while(read_joystick_button()){
                 _delay_us(5);
