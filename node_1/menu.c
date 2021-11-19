@@ -120,7 +120,6 @@ uint8_t run_menu(int8_t* bias, MenuType menu){
 }
 
 void refresh_menu(char* menu_elements[], uint8_t current_option){
-    //oled_reset(); dont need to reset the screen when we are overwriting all pages anyways?
     for (uint8_t i = 0; i < TOTAL_PAGES; i++){
         oled_goto_position(0, i);
         uint8_t invert = 0;

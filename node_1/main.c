@@ -115,7 +115,7 @@ int main() {
                         break;
 
                     default:
-                        printf("ERROR: Undefined interrupt\r\n");
+                        //printf("ERROR: Undefined interrupt\r\n");
                         mcp_bit_modify(MCP_CANINTF, 0xff, 0);
                         break;
                 }
@@ -128,8 +128,8 @@ int main() {
                 int0_flag = 0;
                 can_msg button_message = {.id = 42, .data = &position, .len = 2};
                 can_send_msg(button_message);
-                printf("sending msg HIT BALL\r\n");
-                _delay_ms(5);
+                //printf("sending msg HIT BALL\r\n");
+                _delay_ms(10);
             }
             
 
