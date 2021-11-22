@@ -26,7 +26,7 @@
 
 #define ENCODER_DATA_Msk 0x1fe // To read only PC1-PC8 for encoder data  
 
-#define CALIBRATION_INPUT_TO_MOTORS 65
+#define CALIBRATION_INPUT_TO_MOTORS 90
 
 void encoder_init();
 void encoder_read(uint32_t *encoder_counter);

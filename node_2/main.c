@@ -76,6 +76,7 @@ int main(void)
 	
 		if(RTT_FLAG == 1 && leftmost_encoder_value && rightmost_encoder_value && game_mode == 1){
 			pid_measurement_test = convert_encoder_to_joystick(encoder_value, leftmost_encoder_value, rightmost_encoder_value);
+			//printf("pid_easurement_test: %d\r\n", pid_measurement_test);
 			set_motor_output_from_joystick_value(get_updated_input(pid_measurement_test-pid_ref_test));
 			RTT_FLAG = 0;
 		}
@@ -90,7 +91,7 @@ int main(void)
 				message.id = 1;
 				// printf("Hitting the ball!\r\n ");
 				PIOA->PIO_CODR = PIO_PA14;
-				_delay_ms(50);
+				_delay_ms(75);
 				PIOA->PIO_SODR = PIO_PA14;
 				//ball_hit_at = global_rtt_counter;
 				//ball_hit_active = 1;
@@ -124,9 +125,9 @@ int main(void)
 			game_over = 0;
 		}
 		
-		if (analog_value < 15 && !score_flag){  //register a goal
+		if (analog_value < 5 && !score_flag){  //register a goal
 			CAN_MESSAGE msg = {.id = 10, .data = score_counter, .data_length = 1};
-			printf("adc val: %d", analog_value);
+			//printf("adc val: %d", analog_value);
 			can_send(&msg, 0);
 			score_flag = 1;
 		}

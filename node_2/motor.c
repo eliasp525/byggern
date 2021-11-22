@@ -19,12 +19,12 @@ void set_motor_output(uint32_t value){
     dac_convert(value);
 }
 
-void set_motor_direction(int8_t dir){
+void set_motor_direction(int16_t dir){
 	// dir = 1 or 0
 	if (dir > 0){
 		PIOD->PIO_CODR = MOTOR_DIR_PIN;
 	}
-	else if (dir < 0){
+	else {
 		PIOD->PIO_SODR = MOTOR_DIR_PIN;
 	}
 }

@@ -70,6 +70,7 @@ int16_t convert_encoder_to_joystick(int16_t encoder_value, int16_t leftmost_enco
 
 void calibrate_encoder(int16_t *leftmost_encoder_value, int16_t* rightmost_encoder_value){
 	printf("Starting encoder calibration\r\n ");
+	_delay_ms(300);
 	*leftmost_encoder_value = get_leftmost_encoder_value();
 	*rightmost_encoder_value = get_rightmost_encoder_value();
 	
